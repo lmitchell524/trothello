@@ -2,6 +2,7 @@ $(document).ready( initializeGame );
 
 function initializeGame(){
     controller.createBoard();
+    view.applyClickHandlers();
 }
 
 
@@ -26,6 +27,9 @@ var model = {
 };
 
 var view = {
+    applyClickHandlers: function(){
+        $('#gameboard').on('click', '.column', controller.addChipToGame);
+    },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
             var row = $('<div>').addClass('row');
@@ -36,9 +40,6 @@ var view = {
             $('#gameboard').append(row);
         }
     }
-
-
-
 };
 
 var controller = {
@@ -46,7 +47,8 @@ var controller = {
         view.gameboardCreation();
         model.createGridArrayMatrix();
     },
-    addChipToGame: function(){
-
+    addChipToGame: function(event){
+        var targetCell = event.target;
+        console.log(targetCell);
     }
 };
