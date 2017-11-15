@@ -46,3 +46,7 @@ var controller = {
         model.createGridArrayMatrix();
     }
 };
+
+function initialChips(){
+
+}
