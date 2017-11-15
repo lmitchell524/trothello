@@ -85,6 +85,10 @@ h1 {
     height: 100%;
 }
 
+.hideChip {
+    display:none;
+}
+
 .blue {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
 }
@@ -93,7 +97,7 @@ h1 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
-/*modal*/
+/* ------------------ modal ----------------------*/
 
 .modalContainer {
     position: fixed;
