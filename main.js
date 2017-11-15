@@ -45,5 +45,8 @@ var controller = {
     createBoard: function(){
         view.gameboardCreation();
         model.createGridArrayMatrix();
+    },
+    addChipToGame: function(){
+
     }
 };
