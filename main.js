@@ -30,7 +30,7 @@ var view = {
             for (var col = 0; col < 8; col++) {
                 var cell = $('<div>').addClass('cell');
                 for (var j = 0; j < 1; j++){
-                    var innerDiv = $('<div>').addClass("chip").text("o");
+                    var innerDiv = $('<div>').addClass("chip").text("o").css('display', 'none');
                     $(cell).append(innerDiv);
                 }
                 $(row).append(cell);

@@ -102,6 +102,7 @@ h1 {
     height: 100vh;
     background-color: lightgrey;
     color: black;
+    display: none;
 }
 
 .modalHeader {
