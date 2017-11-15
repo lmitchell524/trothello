@@ -11,10 +11,29 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="modalContainer">
+        <div class="modal">
+            <header class="modalHeader">Trothello</header>
+            <div class="playerBox  playerBox1">
+                <p>Tron</p>
+            </div>
+            <div class="playerBox playerBox2">
+                <p>Clu</p>
+            </div>
+            <div class="directions">
+                <h2>How to play</h2>
+                <ul class="directionsList">
+                    <li>The object is to have the majority of your discs on the board at the end of the game</li>
+                    <li>Pick your player</li>
+                    <li>Each player is given 32 discs</li>
+                    <li>Disc placement must surround opponents disc in order to flip to your color (your disc must be on either end of your opponents disc)</li>
+                    <li>Rows can be horizontal, vertical, and diagonal</li>
+                </ul>
+            </div>
+            <button class="playButton">Play!</button>
+        </div>
+    </div>
     <main>
-        <!--<header>-->
-
-        <!--</header>-->
         <aside class="leftAside">
                 <div class="player1Stats"></div>
         </aside>
@@ -23,23 +42,6 @@
         <aside class="rightAside">
             <div class="player2Stats"></div>
         </aside>
-        <-- modal content -->
-        <div class="modal fade" id="introModal" role="dialog">
-            <div class="modalDialog">
-
-                <!-- Modal content-->
-                <div class="modalContent">
-                    <div class="modalHeader">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modalTitle">landscape-10</h4>
-                    </div>
-                    <div class="modalBody">
-                        <img src="images/landscape-10.jpg">
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </main>
 </body>
 </html>
