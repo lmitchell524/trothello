@@ -75,8 +75,7 @@ var controller = {
         view.gameboardCreation();
         model.createGridArrayMatrix();
     },
-
-    InitialChips: function(){
+    InitialChips: function() {
         view.addChipToBoard(model.grid[3][3], 0);
         view.addChipToBoard(model.grid[3][4], 1);
         view.addChipToBoard(model.grid[4][3], 1);
@@ -85,6 +84,15 @@ var controller = {
         model.addChipData(3, 4, 1);
         model.addChipData(4, 3, 1);
         model.addChipData(4, 4, 0);
+    },
+    checkAvailableSpots: function(){
+        for(var i = 0; i < model.grid.length; i++){
+            for(var j = 0; j < model.grid[i].length; j++){
+                if(model.grid[i][j].occupied === false && model.grid[i][j].clickable === true){
+                    console.log("test");
+                }
+            }
+        }
     }
 };
 
