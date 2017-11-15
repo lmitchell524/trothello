@@ -19,8 +19,7 @@ body {
     height: 100vh;
     width: 100vw;
     font-family: 'Tron', sans-serif;
-
-    color: white;
+    color: #fff;
 }
 
 main {
@@ -85,4 +84,20 @@ h1 {
 
 .column {
     font-size: 2.5vw;
+    text-align: center;
 }
+
+/* ---------------- neon effect ---------------- */
+
+div p {
+    color: #fff;
+}
+
+.blue {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+}
+
+.orange {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
+}
+
