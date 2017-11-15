@@ -4,8 +4,6 @@ function initializeGame(){
     controller.createBoard();
 }
 
-
-
 var model = {
     grid: [],
     CreateGridCell: function(y, x){
@@ -30,15 +28,16 @@ var view = {
         for (var i = 0; i < 8; i++) {
             var row = $('<div>').addClass('row');
             for (var col = 0; col < 8; col++) {
-                var column = $('<div>').addClass('column');
-                $(row).append(column);
+                var cell = $('<div>').addClass('cell');
+                for (var j = 0; j < 1; j++){
+                    var innerDiv = $('<div>').addClass("chip").text("o");
+                    $(cell).append(innerDiv);
+                }
+                $(row).append(cell);
             }
             $('#gameboard').append(row);
         }
     }
-
-
-
 };
 
 var controller = {

@@ -68,23 +68,20 @@ aside {
     height: 12.5%;
 }
 
-.column {
+.cell {
     width: 12.5%;
     height: 100%;
     border: 1px solid white;
     display: inline-block;
     float: left;
+    font-size: 2.5vw;
+    text-align: center;
 }
 
 h1 {
     text-align: center;
     color: white;
     font-size: 2vw;
-}
-
-.column {
-    font-size: 2.5vw;
-    text-align: center;
 }
 
 /* ---------------- neon effect ---------------- */
