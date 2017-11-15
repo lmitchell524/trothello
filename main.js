@@ -2,6 +2,7 @@ $(document).ready( initializeGame );
 
 function initializeGame(){
     controller.createBoard();
+    controller.InitialChips();
 }
 
 var model = {
@@ -21,7 +22,24 @@ var model = {
             }
             this.grid.push(row);
         }
+    },
+    addChipData: function(y, x, player){
+        var currentCell = this.grid[y][x];
+        currentCell.occupied = true;
+        currentCell.player = player;
+        this.addSurroundingClick(y, x);
+    },
+    addSurroundingClick: function(y, x){
+        this.grid[y-1][x-1].clickable = true;
+        this.grid[y-1][x].clickable = true;
+        this.grid[y-1][x+1].clickable = true;
+        this.grid[y][x-1].clickable = true;
+        this.grid[y][x+1].clickable = true;
+        this.grid[y+1][x-1].clickable = true;
+        this.grid[y+1][x].clickable = true;
+        this.grid[y+1][x+1].clickable = true;
     }
+
 };
 
 var view = {
@@ -31,15 +49,22 @@ var view = {
             for (var col = 0; col < 8; col++) {
                 var cell = $('<div>').addClass('cell');
                 for (var j = 0; j < 1; j++){
-                    var innerDiv = $('<div>').addClass("chip")
+                    var innerDiv = $('<div>').addClass("chip hideChip")
                                              .text("o")
-                                             .css('display', 'none')
                                              .attr('position', i + '-' + col);
                     $(cell).append(innerDiv);
                 }
                 $(row).append(cell);
             }
             $('#gameboard').append(row);
+        }
+    },
+
+    addChipToBoard: function(targetCell, player){
+        if(player === 0){
+            targetCell.location.find('.chip').removeClass('hideChip').addClass('blue');
+        } else {
+            targetCell.location.find('.chip').removeClass('hideChip').addClass('orange');
         }
     }
 };
@@ -48,9 +73,17 @@ var controller = {
     createBoard: function(){
         view.gameboardCreation();
         model.createGridArrayMatrix();
+    },
+
+    InitialChips: function(){
+        view.addChipToBoard(model.grid[3][3], 0);
+        view.addChipToBoard(model.grid[3][4], 1);
+        view.addChipToBoard(model.grid[4][3], 1);
+        view.addChipToBoard(model.grid[4][4], 0);
+        model.addChipData(3, 3, 0);
+        model.addChipData(3, 4, 1);
+        model.addChipData(4, 3, 1);
+        model.addChipData(4, 4, 0);
     }
 };
 
-function initialChips(){
-
-}
