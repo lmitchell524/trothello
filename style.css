@@ -2,6 +2,13 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Tron';
+    src: url(tron/tron.ttf);
+    font-style: bold;
+    font-weight: bold;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -9,11 +16,12 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-
     height: 100vh;
     width: 100vw;
-}
+    font-family: 'Tron', sans-serif;
 
+    color: white;
+}
 
 main {
     width: 140vh;
@@ -69,3 +77,12 @@ aside {
     float: left;
 }
 
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 2vw;
+}
+
+.column {
+    font-size: 2.5vw;
+}
