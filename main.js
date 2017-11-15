@@ -5,7 +5,10 @@ function initializeGame(){
 }
 
 var model = {
+    grid: [],
+    CreateGridCell: function(){
 
+    }
 };
 
 var view = {
