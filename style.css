@@ -2,6 +2,13 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Tron';
+    src: url(tron/tron.ttf);
+    font-style: bold;
+    font-weight: bold;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -9,11 +16,11 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-
     height: 100vh;
     width: 100vw;
+    font-family: 'Tron', sans-serif;
+    color: #fff;
 }
-
 
 main {
     width: 140vh;
@@ -67,5 +74,31 @@ aside {
     border: 1px solid white;
     display: inline-block;
     float: left;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 2vw;
+}
+
+.column {
+    font-size: 2.5vw;
+    text-align: center;
+}
+
+/* ---------------- neon effect ---------------- */
+
+.chip {
+    width: 100%;
+    height: 100%;
+}
+
+.blue {
+    text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+}
+
+.orange {
+    text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
