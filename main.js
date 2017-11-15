@@ -8,8 +8,9 @@ var model = {
     grid: [],
     CreateGridCell: function(y, x){
         this.occupied = false;
-        this.location = y + '-' + x;
+        this.location = $('.row:eq('+y+') .cell:eq('+x+')');
         this.player = null;
+        this.clickable = false;
     },
     createGridArrayMatrix: function(){
         for (var y=0; y<8; y++){
@@ -30,7 +31,10 @@ var view = {
             for (var col = 0; col < 8; col++) {
                 var cell = $('<div>').addClass('cell');
                 for (var j = 0; j < 1; j++){
-                    var innerDiv = $('<div>').addClass("chip").text("o").css('display', 'none');
+                    var innerDiv = $('<div>').addClass("chip")
+                                             .text("o")
+                                             .css('display', 'none')
+                                             .attr('position', i + '-' + col);
                     $(cell).append(innerDiv);
                 }
                 $(row).append(cell);
