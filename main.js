@@ -1,7 +1,7 @@
 $(document).ready( initializeGame );
 
 function initializeGame(){
-    view.gameboardCreation();
+    controller.createBoard();
 }
 
 
@@ -42,5 +42,8 @@ var view = {
 };
 
 var controller = {
-
+    createBoard: function(){
+        view.gameboardCreation();
+        model.createGridArrayMatrix();
+    }
 };
