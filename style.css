@@ -31,12 +31,6 @@ main {
     transform: translate(-50%, -50%);
 }
 
-/*header {*/
-    /*height: 10vh;*/
-    /*background-color: lightgrey;*/
-/*}*/
-
-
 aside {
     position: absolute;
     top: 50%;
@@ -45,6 +39,7 @@ aside {
     height: 80%;
     border: 1px solid white;
 }
+
 .leftAside {
     left: 7%;
 }
@@ -75,7 +70,6 @@ aside {
     display: inline-block;
     float: left;
 }
-
 h1 {
     text-align: center;
     color: white;
@@ -101,4 +95,72 @@ h1 {
 .orange {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
+
+/*modal*/
+
+.modalContainer {
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background-color: lightgrey;
+    color: black;
+}
+
+.modalHeader {
+    /*font-family: ;*/
+    font-size: 2em;
+    text-align: center;
+}
+
+.playerBox {
+    left: 15%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 30%;
+    text-align: center;
+    position: fixed;
+    border: 1px solid black;
+}
+
+.playerBox1 {
+    top: 30%;
+}
+
+.playerBox2 {
+    top: 70%;
+}
+
+.directions {
+    width: 55vw;
+    height: 42vw;
+    float: left;
+    position: absolute;
+    top: 45%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+}
+
+.directionList {
+    font-size: 3em;
+}
+
+.directions > h2 {
+    text-align: center;
+}
+
+.playButton {
+    background-color: white;
+    width: 20%;
+    height: 35px;
+    border-radius: 5px;
+    outline: none;
+    position: absolute;
+    top: 85%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+}
+
+
 
