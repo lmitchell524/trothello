@@ -48,5 +48,14 @@ var controller = {
     createBoard: function(){
         view.gameboardCreation();
         model.createGridArrayMatrix();
+    },
+    checkAvailableSpots: function(){
+            for(var i = 0; i < model.grid.length; i++){
+                for(var j = 0; j < model.grid[i].length; j++){
+                    if(model.grid[i][j].occupied === false && model.grid[i][j].clickable === true){
+                        console.log("test");
+                    }
+                }
+            }
     }
 };
