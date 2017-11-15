@@ -6,6 +6,7 @@ function initializeGame(){
 
 var model = {
     grid: [],
+    player: 0,
     CreateGridCell: function(y, x){
         this.occupied = false;
         this.location = $('.row:eq('+y+') .cell:eq('+x+')');
