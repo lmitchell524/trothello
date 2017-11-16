@@ -246,6 +246,7 @@ var model = {
 var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
+        $('.playButton').on('click', view.removeModal);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -294,6 +295,12 @@ var view = {
         for (var i=0; i<cellArray.length; i++){
             cellArray[i].location.find('.chip').addClass('chipGhostOutline');
         }
+    },
+    removeModal: function(){
+        $('.modalContainer').css('transform', 'scale(0)');
+        setTimeout(function(){
+            $('main').css('opacity', '1');
+        }, 1000);
     }
 };
 

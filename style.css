@@ -5,7 +5,6 @@
 @font-face {
     font-family: 'Tron';
     src: url(tron/tron.ttf);
-    font-style: bold;
     font-weight: bold;
 }
 
@@ -29,6 +28,8 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.5s;
 }
 
 aside {
@@ -45,7 +46,7 @@ aside {
 }
 
 .discs, .counter{
-    font-size: 2.5em;
+    font-size: 2em;
     font-family: 'Rationale', sans-serif;
     font-weight: bold;
     margin: 10%;
@@ -136,29 +137,29 @@ h2 {
     z-index: 100;
     width: 100vw;
     height: 100vh;
-    background-color: lightgrey;
     color: white;
-    display: none;
+    transition: 1s;
 }
 
 .modalHeader {
-    margin-top: 1%;
+    margin-top: 6%;
     font-size: 3em;
     text-align: center;
 }
 
 .playerBox {
-    left: 15%;
     transform: translate(-50%, -50%);
     width: 20%;
     height: 30%;
     text-align: center;
     position: fixed;
-    border: 1px solid;
+    border: 1px solid #2dcde5;
+    border-radius: 5px;
 }
 
 .playerBox1 {
-    top: 30%;
+    top: 50%;
+    left: 12%;
     background-image: url('images/tronAvitar.jpg');
     background-position: center;
     background-repeat: no-repeat;
@@ -166,7 +167,8 @@ h2 {
 }
 
 .playerBox2 {
-    top: 70%;
+    top: 50%;
+    left: 88%;
     background-image: url('images/cluAvitar.jpg');
     background-position: center;
     background-repeat: no-repeat;
@@ -184,12 +186,13 @@ h2 {
     width: 50vw;
     float: left;
     position: absolute;
-    top: 50%;
-    left: 65%;
+    top: 52%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px solid white;
+    border: 1px solid #2dcde5;
     font-family: 'Rationale', sans-serif;
     padding: 2%;
+    border-radius: 5px;
 }
 
 .directionsList > li {
@@ -210,8 +213,8 @@ h2 {
     border-radius: 5px;
     outline: none;
     position: absolute;
-    top: 85%;
-    left: 65%;
+    top: 87%;
+    left: 50%;
     transform: translate(-50%, -50%);
     border: none;
     font-family:'Tron', sans-serif;
