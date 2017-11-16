@@ -119,7 +119,10 @@ h2 {
 
 .chipGhostOutline {
     display: inline-block;
-    opacity: 0.1;
+    opacity: 0.15;
+}
+.chipGhostOutline:hover {
+    opacity: 0.3;
 }
 
 .blue {
