@@ -22,7 +22,7 @@ body {
 }
 
 main {
-    width: 140vh;
+    width: 95vw;
     height: 95vh;
     position: absolute;
     top: 50%;
@@ -35,7 +35,7 @@ main {
 aside {
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(0, -50%);
     width: 20%;
     height: 45%;
     border: 1px solid rgba(45, 205, 229, .5);
@@ -57,7 +57,10 @@ aside {
 }
 
 .leftAside {
-    left: 7%;
+    left: 3%;
+}
+.rightAside {
+    right: 3%;
 }
 
 .glowBlue {
@@ -68,9 +71,7 @@ aside {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
 
-.rightAside {
-    left: 93%;
-}
+
 
 #gameboard {
     width: 42vw;
