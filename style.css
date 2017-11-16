@@ -37,7 +37,7 @@ aside {
     top: 50%;
     transform: translate(0, -50%);
     width: 20%;
-    border: 1px solid rgba(45, 205, 229, .5);
+    border: 1px solid rgba(45, 205, 229, 1);
     border-radius: 5px;
     text-align: center;
     color: white;
@@ -90,7 +90,7 @@ aside {
 .cell {
     width: 11.5%;
     height: 100%;
-    border: 1px solid rgba(45, 205, 229, .5);
+    border: 1px solid rgba(45, 205, 229, 1);
     display: inline-block;
     float: left;
     font-size: 2.5vw;
@@ -119,7 +119,10 @@ h2 {
 
 .chipGhostOutline {
     display: inline-block;
-    opacity: 0.1;
+    opacity: 0.15;
+}
+.chipGhostOutline:hover {
+    opacity: 0.3;
 }
 
 .blue {

@@ -1,11 +1,13 @@
 $(document).ready( initializeGame );
 
+
 function initializeGame(){
     controller.createBoard();
     view.applyClickHandlers();
     controller.InitialChips();
     view.displayChipCount();
 }
+
 
 var model = {
     grid: [],
@@ -268,7 +270,17 @@ var model = {
             return 0;
         }
         return false;
-    }
+    },
+    gridAnnihilation: function(){
+        this.grid = [];
+    },
+    statReset: function(){
+        this.player = 0;
+        this.currentAvailableSpots = null;
+        this.chipCount = null;
+        this.player1ChipCount = null;
+        this.player2ChipCount = null;
+    },
 };
 
 var view = {
@@ -277,6 +289,7 @@ var view = {
         $('.playButton').on('click', controller.gameStart);
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
+        $('.playAgain').on('click', controller.playAgain);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -343,7 +356,10 @@ var view = {
     addPlayer2Glow: function(){                         //add glow to player selection in model
         $('.playerBox2').addClass('playerBox2Clicked');
         $('.playerBox1').removeClass('playerBox1Clicked');
-    }
+    },
+    gameboardAnnihilation: function(){
+        $('#gameboard').empty();
+    },
 };
 
 var controller = {
@@ -440,6 +456,15 @@ var controller = {
         } else if (winState === 2){
             alert('it\'s a draw!');
         }
-    }
+    },
+    playAgain: function(){
+        // will need to bind the controller object to "this" when we call this function from our click handler
+        view.gameboardAnnihilation();
+        model.gridAnnihilation();
+        model.statReset();
+        initializeGame();
+        this.gameStart();
+    },
 };
+
 
