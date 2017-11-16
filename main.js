@@ -336,13 +336,22 @@ var view = {
         $('.counter1').text(model.player1ChipCount);
         $('.counter2').text(model.player2ChipCount);
     },
-    addPlayer1Glow: function(){                         //add glow to player selection in model
+    addPlayer1Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox1').addClass('playerBox1Clicked');
         $('.playerBox2').removeClass('playerBox2Clicked');
+        $('.playerBox1Win').addClass('playerBox1WinClicked');
+        $('.playerBox2Win').removeClass('playerBox2WinClicked');
     },
-    addPlayer2Glow: function(){                         //add glow to player selection in model
+    addPlayer2Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox2').addClass('playerBox2Clicked');
         $('.playerBox1').removeClass('playerBox1Clicked');
+        $('.playerBox2Win').addClass('playerBox2WinClicked');
+        $('.playerBox1Win').removeClass('playerBox1WinClicked');
+    },
+    addWinnerModal: function(){
+        $('.winModalContent').css('transform', 'scale(1)');
+        $('.playerBox1Win').on('click', controller.chosePlayer1);
+        $('.playerBox2Win').on('click', controller.chosePlayer2);
     }
 };
 
@@ -434,11 +443,14 @@ var controller = {
     checkWinState: function(){
         var winState = model.checkWinStats();
         if (winState === 0){
-            alert('player 1 wins!');
+            $('.winnerModalHeader').text('Tron Wins!');
+            view.addWinnerModal();
         } else if (winState === 1){
-            alert('player 2 wins!');
+            $('.winnerModalHeader').text('Clu Wins!');
+            view.addWinnerModal();
         } else if (winState === 2){
-            alert('it\'s a draw!');
+            $('.winnerModalHeader').text('It\'s a draw!');
+            view.addWinnerModal();
         }
     }
 };
