@@ -130,6 +130,11 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
+.counter1, .counter2 {
+    font-family: 'Rationale', sans-serif;
+    font-size: 3vw;
+}
+
 /* ------------------ intro modal ----------------------*/
 
 .introModalContainer {
@@ -139,6 +144,7 @@ h2 {
     height: 100vh;
     color: white;
     transition: 1s;
+    display: none;
 }
 
 .introModalHeader {
@@ -258,10 +264,6 @@ h2 {
     cursor: pointer;
 }
 
-.counter1, .counter2 {
-    font-family: 'Rationale', sans-serif;
-    font-size: 3vw;
-}
 
 /************** win modal **************/
 
@@ -283,5 +285,60 @@ h2 {
     /*background-color: #0f192a;*/
 /*}*/
 
+.winModalContent {
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    background-image: url("https://www.filepicker.io/api/file/paOjQVhjT5yeo2gNn9lr");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+.winnerModalHeaderTron {
+    margin-top: 5vw;
+    font-size: 6vw;
+    text-align: center;
+}
 
+.winnerModalHeaderClu {
+    margin-top: 5vw;
+    font-size: 6vw;
+    text-align: center;
+    display: none;
+}
+
+.gameOver {
+    font-family:'Tron', sans-serif;
+    font-size: 4vw;
+    text-align: center;
+}
+
+.winnerBox {
+    width: 60vw;
+    float: left;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*border: 1px solid #2dcde5;*/
+    padding: 2%;
+    border-radius: 5px;
+}
+
+.playButton, .playAgainButton {
+    background-color: white;
+    width: 30%;
+    height: 45px;
+    border-radius: 5px;
+    outline: none;
+    position: absolute;
+    top: 95vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    font-family:'Tron', sans-serif;
+    font-size: 1em;
+}
