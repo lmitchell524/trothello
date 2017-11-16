@@ -36,9 +36,22 @@ aside {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 20%;
-    height: 80%;
+    height: 45%;
     border: 1px solid rgba(45, 205, 229, .5);
     border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+.discs, .counter{
+    font-size: 2.5em;
+    font-family: 'Rationale', sans-serif;
+    font-weight: bold;
+    margin: 10%;
+}
+
+.discs {
+    margin-top: 15%;
 }
 
 .leftAside {
@@ -77,8 +90,6 @@ aside {
 }
 
 h1 {
-    text-align: center;
-    color: white;
     font-size: 2vw;
 }
 
@@ -94,7 +105,7 @@ h1 {
 }
 
 .blue {
-    text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+    text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #2dcde5, 0 0 70px #2dcde5, 0 0 80px #2dcde5, 0 0 100px #2dcde5, 0 0 150px #2dcde5;
 }
 
 .orange {
