@@ -277,6 +277,7 @@ var view = {
         $('.playButton').on('click', controller.gameStart);
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
+        $('.playAgain').on('click', controller.playAgain);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -440,6 +441,16 @@ var controller = {
         } else if (winState === 2){
             alert('it\'s a draw!');
         }
+    },
+    playAgain: function(){
+        model.grid = [];
+        model.player = 0,
+        model.currentAvailableSpots = null,
+        model.chipCount = null,
+        model.player1ChipCount = null,
+        model.player2ChipCount = null,
+        initializeGame();
     }
 };
+
 
