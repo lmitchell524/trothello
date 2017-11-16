@@ -1,5 +1,6 @@
 $(document).ready( initializeGame );
 
+
 function initializeGame(){
     controller.createBoard();
     view.applyClickHandlers();
@@ -7,9 +8,11 @@ function initializeGame(){
     view.displayChipCount();
 }
 
+
 var model = {
     grid: [],
     player: 0,
+    ai: null,
     currentAvailableSpots: null,
     chipCount: null,
     player1ChipCount: null,
@@ -254,7 +257,7 @@ var model = {
         }
     },
     checkWinStats: function(){
-        if (this.chipCount === 64){
+        if (this.chipCount === 64 || this.currentAvailableSpots[0] === undefined){
             if (this.player1ChipCount > this.player2ChipCount) {
                 return 0;
             } else if (this.player1ChipCount < this.player2ChipCount){
@@ -268,8 +271,25 @@ var model = {
             return 0;
         }
         return false;
+    },
+    gridAnnihilation: function(){
+        this.grid = [];
+    },
+    statReset: function(){
+        this.currentAvailableSpots = null;
+        this.chipCount = null;
+        this.player1ChipCount = null;
+        this.player2ChipCount = null;
+    },
+    getRandomAvailableSpot: function(){
+        var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
+        return this.currentAvailableSpots[spotIndex];
     }
 };
+
+
+// ------------------------ VIEW -------------------------- //
+
 
 var view = {
     applyClickHandlers: function(){
@@ -277,6 +297,8 @@ var view = {
         $('.playButton').on('click', controller.gameStart);
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
+        $('.playerBox1Win').on('click', controller.playAgainPlayer1);
+        $('.playerBox2Win').on('click', controller.playAgainPlayer2);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -327,7 +349,7 @@ var view = {
         }
     },
     removeModal: function(){
-        $('.modalContainer').css('transform', 'scale(0)');
+        $('.introModalContainer').css('transform', 'scale(0)');
         setTimeout(function(){
             $('main').css('opacity', '1');
         }, 1000);
@@ -336,15 +358,33 @@ var view = {
         $('.counter1').text(model.player1ChipCount);
         $('.counter2').text(model.player2ChipCount);
     },
-    addPlayer1Glow: function(){                         //add glow to player selection in model
+    addPlayer1Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox1').addClass('playerBox1Clicked');
         $('.playerBox2').removeClass('playerBox2Clicked');
+        $('.playerBox1Win').addClass('playerBox1WinClicked');
+        $('.playerBox2Win').removeClass('playerBox2WinClicked');
     },
-    addPlayer2Glow: function(){                         //add glow to player selection in model
+    addPlayer2Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox2').addClass('playerBox2Clicked');
         $('.playerBox1').removeClass('playerBox1Clicked');
-    }
+        $('.playerBox2Win').addClass('playerBox2WinClicked');
+        $('.playerBox1Win').removeClass('playerBox1WinClicked');
+    },
+    addWinnerModal: function(){
+        $('.winModalContent').css('transform', 'scale(1)');
+    },
+    removeWinnerModal: function(){
+        $('.winModalContent').hide();
+        controller.playAgain();
+    },
+    gameboardAnnihilation: function(){
+        $('#gameboard').empty();
+    },
 };
+
+
+// --------------------------- CONTROLLER ------------------------- //
+
 
 var controller = {
     createBoard: function(){
@@ -356,6 +396,7 @@ var controller = {
         view.playerTurn(model.player);
         model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
         view.addGhostOutlines(model.currentAvailableSpots);
+        model.ai = 1 - model.player;
     },
     chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
         model.player = 0;
@@ -390,7 +431,6 @@ var controller = {
     },
     addChipToGame: function() {
         var targetCell = $(this);
-        var player = model.player;
         var targetPosition;
         var y;
         var x;
@@ -405,48 +445,84 @@ var controller = {
 
 
 
-                view.addChipToBoard(targetCell, player);
-                model.addChipData(y, x, player);
+                view.addChipToBoard(targetCell, model.player);
+                model.addChipData(y, x, model.player);
 
                 for (var j=0; j<model.directionCheckFunctions.length; j++){
-                    var currentCheck = model.directionCheckFunctions[j](y, x, player);
+                    var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
                     if (currentCheck){
                         for (var k=0; k<currentCheck.length; k++){
                             // prepareExploders(currentCheck[k].location.find('.chip'), true);
                             view.flipChip(currentCheck[k].location.find('.chip'));
-                            model.flipChipData(currentCheck[k], player);
+                            model.flipChipData(currentCheck[k], model.player);
                         }
                     }
                 }
 
                 view.displayChipCount();
-                model.player = 1 - player;                      //switches player at turn end
-                view.playerTurn(model.player);                  //switches player glow to opposite player at turn end
+                model.player = 1 - model.player;                      //switches player at turn end
+
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 if(model.currentAvailableSpots[0] === undefined){
-                    model.player = 1 - player;
+                    model.player = 1 - model.player;
+                    model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 }
-                view.addGhostOutlines(model.currentAvailableSpots);
+                view.playerTurn(model.player); //switches player glow to opposite player at turn end
+                if (model.player === model.ai){
+                    console.log('it is the computers turn!');
+                    controller.aiMove();
+                } else {
+                    view.addGhostOutlines(model.currentAvailableSpots);
+                }
 
                 controller.checkWinState();
             }
         }
     },
+    aiMove: function(){
+        var targetSpot = model.getRandomAvailableSpot();
+        setTimeout(function(){
+            targetSpot.location.click();
+
+        }, (Math.random()*1000 + 1000));
+    },
     checkWinState: function(){
         var winState = model.checkWinStats();
         if (winState === 0){
-            alert('player 1 wins!');
+            // $('.winnerModalHeader').text('Tron Wins!');
+            // view.addWinnerModal();
             explodeElement();
         } else if (winState === 1){
-            alert('player 2 wins!');
+            // $('.winnerModalHeader').text('Clu Wins!');
+            // view.addWinnerModal();
             explodeElement();
         } else if (winState === 2){
-            alert('it\'s a draw!');
+            $('.winnerModalHeader').text('It\'s a draw!');
+            view.addWinnerModal();
+            // explodeElement();
         }
-
+    },
+    playAgain: function(){
+        // will need to bind the controller object to "this" when we call this function from our click handler
+        view.gameboardAnnihilation();
+        model.gridAnnihilation();
+        model.statReset();
+        controller.createBoard();
+        controller.InitialChips();
+        view.displayChipCount();
+        this.gameStart();
+    },
+    playAgainPlayer1: function(){
+        controller.chosePlayer1();
+        view.removeWinnerModal();
+        controller.playAgain();
+    },
+    playAgainPlayer2: function(){
+        controller.chosePlayer2();
+        view.removeWinnerModal();
+        controller.playAgain();
     }
 };
-
 
 // EXPLOSION CODE
 
@@ -477,14 +553,10 @@ var gameboard = null;
         return Math.floor(Math.random() * (max - 1)) + min;
     }
 
-    var first = false,
-        clicked = false;
+    var first = false;
 
-    // On click
-    function explodeElement() {
+    function explodeElement(){
 
-        if(clicked === false) {
-            clicked = true;
             $('.clipped-box .content').css({'display' : 'none'});
             $('.clipped-box div:not(.content)').each(function() {
                 var v = rand(120, 90),
@@ -505,10 +577,10 @@ var gameboard = null;
                 var negate = [1, -1, 0],
                     direction = negate[ Math.floor(Math.random() * negate.length) ];
 
-                // Some random numbers for altering the shapes position
-                var randDeg = rand(-5, 10),
-                    randScale = rand(0.9, 1.1),
-                    randDeg2 = rand(30, 5);
+                // // Some random numbers for altering the shapes position
+                // var randDeg = rand(-5, 10),
+                //     randScale = rand(0.9, 1.1),
+                //     randDeg2 = rand(30, 5);
 
                 // Set an interval
                 z = setInterval(function() {
@@ -547,11 +619,8 @@ var gameboard = null;
 
                     }
 
-                }, 2); // Run this interval every 10ms. Changing this will change the pace of the animation
+                }, 1); // Run this interval every 10ms. Changing this will change the pace of the animation
 
             });
 
-        }
-
     }
-

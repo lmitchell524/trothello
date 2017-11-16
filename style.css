@@ -29,7 +29,7 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: 0.5s;
+    transition: 1s;
 }
 
 aside {
@@ -37,7 +37,7 @@ aside {
     top: 50%;
     transform: translate(0, -50%);
     width: 20%;
-    border: 1px solid rgba(45, 205, 229, .5);
+    border: 1px solid rgba(45, 205, 229, 1);
     border-radius: 5px;
     text-align: center;
     color: white;
@@ -90,7 +90,7 @@ aside {
 .cell {
     width: 11.5%;
     height: 100%;
-    border: 1px solid rgba(45, 205, 229, .5);
+    border: 1px solid rgba(45, 205, 229, 1);
     display: inline-block;
     float: left;
     font-size: 2.5vw;
@@ -119,7 +119,10 @@ h2 {
 
 .chipGhostOutline {
     display: inline-block;
-    opacity: 0.1;
+    opacity: 0.15;
+}
+.chipGhostOutline:hover {
+    opacity: 0.3;
 }
 
 .blue {
@@ -130,9 +133,14 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
+.counter1, .counter2 {
+    font-family: 'Rationale', sans-serif;
+    font-size: 3vw;
+}
+
 /* ------------------ intro modal ----------------------*/
 
-.modalContainer {
+.introModalContainer {
     position: fixed;
     z-index: 100;
     width: 100vw;
@@ -142,7 +150,7 @@ h2 {
     /*display: none;*/
 }
 
-.modalHeader {
+.introModalHeader {
     margin-top: 5vw;
     font-size: 4vw;
     text-align: center;
@@ -166,7 +174,7 @@ h2 {
     position: absolute;
 }
 
-.playerBox1 a span:hover{
+.playerBox1:hover{
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
 }
 
@@ -182,7 +190,7 @@ h2 {
     position: absolute;
 }
 
-.playerBox2 a span:hover {
+.playerBox2:hover {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
 
@@ -259,18 +267,82 @@ h2 {
     cursor: pointer;
 }
 
-.counter1, .counter2 {
-    font-family: 'Rationale', sans-serif;
-    font-size: 3vw;
+
+/************** win modal **************/
+
+
+.winModalContent {
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    background-image: url("images/winnerModalbg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scale(0);
+    transition: .75s;
 }
 
-
-/*  EXPLOSION TEST CODE  -- WORKS! */
-
-.row {
-    position: relative;
-    margin: 0px auto;
+.winnerModalHeader {
+    margin-top: 4vw;
+    font-size: 6vw;
+    text-align: center;
+    /*margin-bottom: 0;*/
 }
+
+.playAgain {
+    font-family:'Tron', sans-serif;
+    font-size: 3.5vw;
+    text-align: center;
+    /*margin-top: 30%;*/
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.playerBox1Win {
+    top: 65%;
+    left: 30%;
+    background-image: url('images/tronAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerBox1Win:hover{
+    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+}
+
+.playerBox1WinClicked{
+    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+}
+
+.playerBox2Win {
+    top: 65%;
+    left: 70%;
+    background-image: url('images/cluAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerBox2Win:hover {
+    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
+}
+
+.playerBox2WinClicked{
+    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
+}
+
+/*  EXPLOSION TEST CODE  */
+
+/*.row {*/
+    /*position: relative;*/
+    /*margin: 0px auto;*/
+/*}*/
 
 .cell {
     -webkit-transition: top 1.2s linear;
@@ -280,7 +352,7 @@ h2 {
     color: #fff;
     font-size: 1em;
     text-align: center;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
     -moz-box-sizing: border-box;
     z-index:-1;
 }
@@ -296,4 +368,3 @@ h2 {
     -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
     transition: transform 1.4s ease-in, background 0.3s ease-in;
 }
-
