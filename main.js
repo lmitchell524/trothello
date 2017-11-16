@@ -1,5 +1,6 @@
 $(document).ready( initializeGame );
 
+
 function initializeGame(){
     controller.createBoard();
     view.applyClickHandlers();
@@ -7,9 +8,11 @@ function initializeGame(){
     view.displayChipCount();
 }
 
+
 var model = {
     grid: [],
     player: 0,
+    ai: null,
     currentAvailableSpots: null,
     chipCount: null,
     player1ChipCount: null,
@@ -268,8 +271,25 @@ var model = {
             return 0;
         }
         return false;
+    },
+    gridAnnihilation: function(){
+        this.grid = [];
+    },
+    statReset: function(){
+        this.currentAvailableSpots = null;
+        this.chipCount = null;
+        this.player1ChipCount = null;
+        this.player2ChipCount = null;
+    },
+    getRandomAvailableSpot: function(){
+        var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
+        return this.currentAvailableSpots[spotIndex];
     }
 };
+
+
+// ------------------------ VIEW -------------------------- //
+
 
 var view = {
     applyClickHandlers: function(){
@@ -277,6 +297,8 @@ var view = {
         $('.playButton').on('click', controller.gameStart);
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
+        $('.playerBox1Win').on('click', controller.playAgainPlayer1);
+        $('.playerBox2Win').on('click', controller.playAgainPlayer2);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -350,10 +372,19 @@ var view = {
     },
     addWinnerModal: function(){
         $('.winModalContent').css('transform', 'scale(1)');
-        $('.playerBox1Win').on('click', controller.chosePlayer1);
-        $('.playerBox2Win').on('click', controller.chosePlayer2);
-    }
+    },
+    removeWinnerModal: function(){
+        $('.winModalContent').hide();
+        controller.playAgain();
+    },
+    gameboardAnnihilation: function(){
+        $('#gameboard').empty();
+    },
 };
+
+
+// --------------------------- CONTROLLER ------------------------- //
+
 
 var controller = {
     createBoard: function(){
@@ -365,6 +396,7 @@ var controller = {
         view.playerTurn(model.player);
         model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
         view.addGhostOutlines(model.currentAvailableSpots);
+        model.ai = 1 - model.player;
     },
     chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
         model.player = 0;
@@ -428,17 +460,30 @@ var controller = {
 
                 view.displayChipCount();
                 model.player = 1 - model.player;                      //switches player at turn end
+
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 if(model.currentAvailableSpots[0] === undefined){
                     model.player = 1 - model.player;
                     model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 }
                 view.playerTurn(model.player); //switches player glow to opposite player at turn end
-                view.addGhostOutlines(model.currentAvailableSpots);
+                if (model.player === model.ai){
+                    console.log('it is the computers turn!');
+                    controller.aiMove();
+                } else {
+                    view.addGhostOutlines(model.currentAvailableSpots);
+                }
 
                 controller.checkWinState();
             }
         }
+    },
+    aiMove: function(){
+        var targetSpot = model.getRandomAvailableSpot();
+        setTimeout(function(){
+            targetSpot.location.click();
+
+        }, (Math.random()*1000 + 1000));
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
@@ -452,6 +497,27 @@ var controller = {
             $('.winnerModalHeader').text('It\'s a draw!');
             view.addWinnerModal();
         }
+    },
+    playAgain: function(){
+        // will need to bind the controller object to "this" when we call this function from our click handler
+        view.gameboardAnnihilation();
+        model.gridAnnihilation();
+        model.statReset();
+        controller.createBoard();
+        controller.InitialChips();
+        view.displayChipCount();
+        this.gameStart();
+    },
+    playAgainPlayer1: function(){
+        controller.chosePlayer1();
+        view.removeWinnerModal();
+        controller.playAgain();
+    },
+    playAgainPlayer2: function(){
+        controller.chosePlayer2();
+        view.removeWinnerModal();
+        controller.playAgain();
     }
 };
+
 
