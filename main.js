@@ -41,34 +41,160 @@ var model = {
         this.grid[y+1][x+1].clickable = true;
     },
     checkSurroundingChips: function(y, x, player){
-        var array = [];
         var otherPlayer = 1 - player;
         if(this.grid[y-1][x-1].player === otherPlayer){
-            array.push(1);
+            if(this.checkUpLeft(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y-1][x].player === otherPlayer){
-            array.push(2);
+            if(this.checkUp(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y-1][x+1].player === otherPlayer){
-            array.push(3);
+            if(this.checkUpRight(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y][x+1].player === otherPlayer){
-            array.push(4);
+            if(this.checkRight(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y+1][x+1].player === otherPlayer){
-            array.push(5);
+            if(this.checkDownRight(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y+1][x].player === otherPlayer){
-            array.push(6);
+            if(this.checkDown(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y+1][x-1].player === otherPlayer){
-            array.push(7);
+            if(this.checkDownLeft(y, x, player)){
+                return true;
+            };
         }
         if(this.grid[y][x-1].player === otherPlayer){
-            array.push(8);
-        } return array;
+            if(this.checkLeft(y, x, player)){
+                return true;
+            };
+        } return false;
     },
+    checkUpLeft: function(y, x, player){
+        var outputArray = [];
 
+        for (var i=1; y-i>=0, x-i>=0; i++){
+            if (model.grid[y-i][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x-i].player !== player){
+                outputArray.push(model.grid[y-i][x-i]);
+            }
+        }
+        return false;
+    },
+    checkUp: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y-i>=0; i++){
+            if (model.grid[y-i][x].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x].player !== player){
+                outputArray.push(model.grid[y-i][x]);
+            }
+        }
+        return false;
+    },
+    checkUpRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y-i>=0, x+i<8; i++){
+            if (model.grid[y-i][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x+i].player !== player){
+                outputArray.push(model.grid[y-i][x+i]);
+            }
+        }
+        return false;
+    },
+    checkRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; x+i<8; i++){
+            if (model.grid[y][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y][x+i].player !== player){
+                outputArray.push(model.grid[y][x+i]);
+            }
+        }
+        return false;
+    },
+    checkDownRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8, x+i<8; i++){
+            if (model.grid[y+i][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x+i].player !== player){
+                outputArray.push(model.grid[y+i][x+i]);
+            }
+        }
+        return false;
+    },
+    checkDown: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8; i++){
+            if (model.grid[y+i][x].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x].player !== player){
+                outputArray.push(model.grid[y+i][x]);
+            }
+        }
+        return false;
+    },
+    checkDownLeft: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8, x-i>=0; i++){
+            if (model.grid[y+i][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x-i].player !== player){
+                outputArray.push(model.grid[y+i][x-i]);
+            }
+        }
+        return false;
+    },
+    checkLeft: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; x-i>=0; i++){
+            if (model.grid[y][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y][x-i].player !== player){
+                outputArray.push(model.grid[y][x-i]);
+            }
+        }
+        return false;
+    }
 };
 
 var view = {
