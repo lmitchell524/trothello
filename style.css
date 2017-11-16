@@ -133,6 +133,11 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
+.counter1, .counter2 {
+    font-family: 'Rationale', sans-serif;
+    font-size: 3vw;
+}
+
 /* ------------------ intro modal ----------------------*/
 
 .introModalContainer {
@@ -142,6 +147,7 @@ h2 {
     height: 100vh;
     color: white;
     transition: 1s;
+    /*display: none;*/
 }
 
 .introModalHeader {
@@ -168,7 +174,7 @@ h2 {
     position: absolute;
 }
 
-.playerBox1 a span:hover{
+.playerBox1:hover{
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
 }
 
@@ -184,7 +190,7 @@ h2 {
     position: absolute;
 }
 
-.playerBox2 a span:hover {
+.playerBox2:hover {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
 
@@ -261,30 +267,72 @@ h2 {
     cursor: pointer;
 }
 
-.counter1, .counter2 {
-    font-family: 'Rationale', sans-serif;
-    font-size: 3vw;
-}
 
 /************** win modal **************/
 
-/*.winModalBackground {*/
-    /*position: fixed;*/
-    /*width: 100vw;*/
-    /*height: 100vh;*/
-    /*background-color: rgba(0,0,0,0.8);*/
-    /*z-index: 5;*/
-/*}*/
 
-/*.winModalContent {*/
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, -50%);*/
-    /*width: 50vw;*/
-    /*height: 50vh;*/
-    /*background-color: #0f192a;*/
-/*}*/
+.winModalContent {
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    background-image: url("images/winnerModalbg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scale(0);
+    transition: .75s;
+}
 
+.winnerModalHeader {
+    margin-top: 4vw;
+    font-size: 6vw;
+    text-align: center;
+    /*margin-bottom: 0;*/
+}
 
+.playAgain {
+    font-family:'Tron', sans-serif;
+    font-size: 3.5vw;
+    text-align: center;
+    /*margin-top: 30%;*/
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
+.playerBox1Win {
+    top: 65%;
+    left: 30%;
+    background-image: url('images/tronAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerBox1Win:hover{
+    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+}
+
+.playerBox1WinClicked{
+    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+}
+
+.playerBox2Win {
+    top: 65%;
+    left: 70%;
+    background-image: url('images/cluAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerBox2Win:hover {
+    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
+}
+
+.playerBox2WinClicked{
+    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
+}

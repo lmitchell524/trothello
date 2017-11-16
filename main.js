@@ -277,7 +277,6 @@ var model = {
         this.grid = [];
     },
     statReset: function(){
-        this.player = 0;
         this.currentAvailableSpots = null;
         this.chipCount = null;
         this.player1ChipCount = null;
@@ -308,7 +307,8 @@ var view = {
         $('.playButton').on('click', controller.gameStart);
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
-        $('.playAgain').on('click', controller.playAgain);
+        $('.playerBox1Win').on('click', controller.playAgainPlayer1);
+        $('.playerBox2Win').on('click', controller.playAgainPlayer2);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -368,13 +368,24 @@ var view = {
         $('.counter1').text(model.player1ChipCount);
         $('.counter2').text(model.player2ChipCount);
     },
-    addPlayer1Glow: function(){                         //add glow to player selection in model
+    addPlayer1Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox1').addClass('playerBox1Clicked');
         $('.playerBox2').removeClass('playerBox2Clicked');
+        $('.playerBox1Win').addClass('playerBox1WinClicked');
+        $('.playerBox2Win').removeClass('playerBox2WinClicked');
     },
-    addPlayer2Glow: function(){                         //add glow to player selection in model
+    addPlayer2Glow: function(){                         //add glow to player selection in intro model
         $('.playerBox2').addClass('playerBox2Clicked');
         $('.playerBox1').removeClass('playerBox1Clicked');
+        $('.playerBox2Win').addClass('playerBox2WinClicked');
+        $('.playerBox1Win').removeClass('playerBox1WinClicked');
+    },
+    addWinnerModal: function(){
+        $('.winModalContent').css('transform', 'scale(1)');
+    },
+    removeWinnerModal: function(){
+        $('.winModalContent').hide();
+        controller.playAgain();
     },
     gameboardAnnihilation: function(){
         $('#gameboard').empty();
@@ -491,11 +502,14 @@ var controller = {
     checkWinState: function(){
         var winState = model.checkWinStats();
         if (winState === 0){
-            alert('player 1 wins!');
+            $('.winnerModalHeader').text('Tron Wins!');
+            view.addWinnerModal();
         } else if (winState === 1){
-            alert('player 2 wins!');
+            $('.winnerModalHeader').text('Clu Wins!');
+            view.addWinnerModal();
         } else if (winState === 2){
-            alert('it\'s a draw!');
+            $('.winnerModalHeader').text('It\'s a draw!');
+            view.addWinnerModal();
         }
     },
     playAgain: function(){
@@ -503,9 +517,21 @@ var controller = {
         view.gameboardAnnihilation();
         model.gridAnnihilation();
         model.statReset();
-        initializeGame();
+        controller.createBoard();
+        controller.InitialChips();
+        view.displayChipCount();
         this.gameStart();
     },
+    playAgainPlayer1: function(){
+        controller.chosePlayer1();
+        view.removeWinnerModal();
+        controller.playAgain();
+    },
+    playAgainPlayer2: function(){
+        controller.chosePlayer2();
+        view.removeWinnerModal();
+        controller.playAgain();
+    }
 };
 
 
