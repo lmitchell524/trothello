@@ -39,8 +39,106 @@ var model = {
         this.grid[y+1][x-1].clickable = true;
         this.grid[y+1][x].clickable = true;
         this.grid[y+1][x+1].clickable = true;
-    }
+    },
 
+    checkUpLeft: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y-i>0, x-i>0; i++){
+            if (model.grid[y-i][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x-i].player !== player){
+                outputArray.push(model.grid[y-i][x-i]);
+            }
+        }
+        return false;
+    },
+    checkUp: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y-i>0; i++){
+            if (model.grid[y-i][x].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x].player !== player){
+                outputArray.push(model.grid[y-i][x]);
+            }
+        }
+        return false;
+    },
+    checkUpRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y-i>0, x+i<8; i++){
+            if (model.grid[y-i][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y-i][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y-i][x+i].player !== player){
+                outputArray.push(model.grid[y-i][x+i]);
+            }
+        }
+        return false;
+    },
+    checkRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; x+i<8; i++){
+            if (model.grid[y][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y][x+i].player !== player){
+                outputArray.push(model.grid[y][x+i]);
+            }
+        }
+        return false;
+    },
+    checkDownRight: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8, x+i<8; i++){
+            if (model.grid[y+i][x+i].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x+i].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x+i].player !== player){
+                outputArray.push(model.grid[y+i][x+i]);
+            }
+        }
+        return false;
+    },
+    checkDown: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8; i++){
+            if (model.grid[y+i][x].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x].player !== player){
+                outputArray.push(model.grid[y+i][x]);
+            }
+        }
+        return false;
+    },
+    checkDownLeft: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; y+i<8, x-i>0; i++){
+            if (model.grid[y+i][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y+i][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y+i][x-i].player !== player){
+                outputArray.push(model.grid[y+i][x-i]);
+            }
+        }
+        return false;
+    }
 };
 
 var view = {
