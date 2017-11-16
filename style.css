@@ -132,7 +132,7 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
-/* ------------------ modal ----------------------*/
+/* ------------------ intro modal ----------------------*/
 
 .modalContainer {
     position: fixed;
@@ -141,6 +141,7 @@ h2 {
     height: 100vh;
     color: white;
     transition: 1s;
+    /*display: none;*/
 }
 
 .modalHeader {
@@ -223,5 +224,32 @@ h2 {
     font-size: 1em;
 }
 
+/*********************************************/
+/***************** WIN MODAL *****************/
+/*********************************************/
+
+.winModalBackground {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(2,2,2,0.8);
+    z-index: 5;
+    transition: 0.5s;
+}
+
+.winModalContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40vw;
+    height: 40vw;
+    background-color: grey;
+    border-left: 150px solid grey;
+    border-right: 150px solid grey;
+    border-top: 50px solid rgba(0,0,0,0);
+    border-bottom: 50px solid rgba(0,0,0,0);
+    /*box-sizing: initial;*/
+}
 
 
