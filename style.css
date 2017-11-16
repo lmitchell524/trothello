@@ -41,6 +41,7 @@ aside {
     border-radius: 5px;
     text-align: center;
     color: white;
+    font-size: 3vw;
 }
 
 .discs, .counter{
@@ -56,6 +57,14 @@ aside {
 
 .leftAside {
     left: 7%;
+}
+
+.glowBlue {
+    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+}
+
+.glowOrange {
+    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
 
 .rightAside {
@@ -89,9 +98,10 @@ aside {
     border-radius: 5px;
 }
 
-h1 {
-    font-size: 2vw;
+h2 {
+    font-size: 3em;
 }
+
 
 /* ---------------- neon effect ---------------- */
 
@@ -120,13 +130,13 @@ h1 {
     width: 100vw;
     height: 100vh;
     background-color: lightgrey;
-    color: black;
-    display: none;
+    color: white;
+    /*display: none;*/
 }
 
 .modalHeader {
-    /*font-family: ;*/
-    font-size: 2em;
+    margin-top: 1%;
+    font-size: 3em;
     text-align: center;
 }
 
@@ -137,34 +147,53 @@ h1 {
     height: 30%;
     text-align: center;
     position: fixed;
-    border: 1px solid black;
+    border: 1px solid;
 }
 
 .playerBox1 {
     top: 30%;
+    background-image: url('images/tronAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .playerBox2 {
     top: 70%;
+    background-image: url('images/cluAvitar.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.playerName {
+    position: relative;
+    bottom: 10%;
+    font-size: 4vw;
+    top: 85%;
 }
 
 .directions {
-    width: 55vw;
-    height: 42vw;
+    width: 50vw;
     float: left;
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 65%;
     transform: translate(-50%, -50%);
-    border: 1px solid black;
+    border: 1px solid white;
+    font-family: 'Rationale', sans-serif;
+    padding: 2%;
 }
 
-.directionList {
-    font-size: 3em;
+.directionsList > li {
+    font-size: 3vh;
+    padding-bottom: 4%;
+    list-style: none;
 }
 
 .directions > h2 {
     text-align: center;
+    margin: 0;
 }
 
 .playButton {
@@ -177,6 +206,9 @@ h1 {
     top: 85%;
     left: 65%;
     transform: translate(-50%, -50%);
+    border: none;
+    font-family:'Tron', sans-serif;
+    font-size: 1em;
 }
 
 

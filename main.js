@@ -272,12 +272,17 @@ var view = {
     },
 
     flipChip: function(domElement){
-        // if (player === 0){
-        //     $(domElement).removeClass('orange').addClass()
-        // } else if (player === 1){
-        //     $(domElement).
-        // }
         domElement.toggleClass('orange blue');
+    },
+
+    playerTurn: function(player){
+        if(player === 0){
+            $('.leftAside').addClass('glowBlue');
+            $('.rightAside').removeClass('glowOrange');
+        } else if (player === 1){
+            $('.rightAside').addClass('glowOrange');
+            $('.leftAside').removeClass('glowBlue');
+        }
     }
 };
 
@@ -338,6 +343,9 @@ var controller = {
 
                 model.player = 1 - player;
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+                if(model.currentAvailableSpots[0] === undefined){
+                    model.player = 1 - player;
+                }
             }
         }
     }
