@@ -38,6 +38,12 @@ var model = {
         currentCell.occupied = true;
         currentCell.player = player;
         this.addSurroundingClick(y, x);
+        this.chipCount++;
+        if (player === 0){
+            this.player1ChipCount++;
+        } else {
+            this.player2ChipCount++;
+        }
     },
     addSurroundingClick: function(y, x){ //checks all 8 cells surrounding current cell and changes them to clickable
         if (y-1>=0 && x-1>=0) {
@@ -238,8 +244,31 @@ var model = {
         }
         return false;
     },
-    flipChipData: function(cellObject){
+    flipChipData: function(cellObject, player){
         cellObject.player = 1 - cellObject.player;
+        if (player === 0){
+            this.player1ChipCount++;
+            this.player2ChipCount--;
+        } else {
+            this.player1ChipCount--;
+            this.player2ChipCount++;
+        }
+    },
+    checkWinStats: function(){
+        if (this.chipCount === 64){
+            if (this.player1ChipCount > this.player2ChipCount) {
+                return 0;
+            } else if (this.player1ChipCount < this.player2ChipCount){
+                return 1;
+            } else {
+                return 2;
+            }
+        } else if (this.player1ChipCount === 0){
+            return 1;
+        } else if (this.player2ChipCount === 0){
+            return 0;
+        }
+        return false;
     }
 };
 
@@ -332,7 +361,7 @@ var controller = {
         }
         return available;
     },
-    addChipToGame: function(event) {
+    addChipToGame: function() {
         var targetCell = $(this);
         var player = model.player;
         var targetPosition;
@@ -357,7 +386,7 @@ var controller = {
                     if (currentCheck){
                         for (var k=0; k<currentCheck.length; k++){
                             view.flipChip(currentCheck[k].location.find('.chip'));
-                            model.flipChipData(currentCheck[k]);
+                            model.flipChipData(currentCheck[k], player);
                         }
                     }
                 }
@@ -368,7 +397,19 @@ var controller = {
                     model.player = 1 - player;
                 }
                 view.addGhostOutlines(model.currentAvailableSpots);
+
+                controller.checkWinState();
             }
+        }
+    },
+    checkWinState: function(){
+        var winState = model.checkWinStats();
+        if (winState === 0){
+            alert('player 1 wins!');
+        } else if (winState === 1){
+            alert('player 2 wins!');
+        } else if (winState === 2){
+            alert('it\'s a draw!');
         }
     }
 };
