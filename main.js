@@ -44,7 +44,7 @@ var model = {
     checkUpLeft: function(y, x, player){
         var outputArray = [];
 
-        for (var i=1; y-i>0, x-i>0; i++){
+        for (var i=1; y-i>=0, x-i>=0; i++){
             if (model.grid[y-i][x-i].player === player){
                 return outputArray;
             } else if (model.grid[y-i][x-i].occupied === false){
@@ -58,7 +58,7 @@ var model = {
     checkUp: function(y, x, player){
         var outputArray = [];
 
-        for (var i=1; y-i>0; i++){
+        for (var i=1; y-i>=0; i++){
             if (model.grid[y-i][x].player === player){
                 return outputArray;
             } else if (model.grid[y-i][x].occupied === false){
@@ -72,7 +72,7 @@ var model = {
     checkUpRight: function(y, x, player){
         var outputArray = [];
 
-        for (var i=1; y-i>0, x+i<8; i++){
+        for (var i=1; y-i>=0, x+i<8; i++){
             if (model.grid[y-i][x+i].player === player){
                 return outputArray;
             } else if (model.grid[y-i][x+i].occupied === false){
@@ -128,13 +128,27 @@ var model = {
     checkDownLeft: function(y, x, player){
         var outputArray = [];
 
-        for (var i=1; y+i<8, x-i>0; i++){
+        for (var i=1; y+i<8, x-i>=0; i++){
             if (model.grid[y+i][x-i].player === player){
                 return outputArray;
             } else if (model.grid[y+i][x-i].occupied === false){
                 return false;
             } else if (model.grid[y+i][x-i].player !== player){
                 outputArray.push(model.grid[y+i][x-i]);
+            }
+        }
+        return false;
+    },
+    checkLeft: function(y, x, player){
+        var outputArray = [];
+
+        for (var i=1; x-i>=0; i++){
+            if (model.grid[y][x-i].player === player){
+                return outputArray;
+            } else if (model.grid[y][x-i].occupied === false){
+                return false;
+            } else if (model.grid[y][x-i].player !== player){
+                outputArray.push(model.grid[y][x-i]);
             }
         }
         return false;
