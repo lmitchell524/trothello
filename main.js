@@ -294,7 +294,12 @@ var model = {
 var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
-        $('.playButton').on('click', controller.gameStart);
+        $('.singleButton').on('click', function(){
+            controller.gameStart(1-model.player);
+        });
+        $('.multiButton').on('click', function(){
+            controller.gameStart(null);
+        });
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
         $('.playerBox1Win').on('click', controller.playAgainPlayer1);
@@ -391,12 +396,12 @@ var controller = {
         view.gameboardCreation();
         model.createGridArrayMatrix();
     },
-    gameStart: function(){ //called when 'enter' button is clicked. Removes model, checks positions available for player one, based on user choice.
+    gameStart: function(numberOfPlayers){ //called when 'enter' button is clicked. Removes model, checks positions available for player one, based on user choice.
         view.removeModal();
         view.playerTurn(model.player);
         model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
         view.addGhostOutlines(model.currentAvailableSpots);
-        model.ai = 1 - model.player;
+        model.ai = numberOfPlayers;
     },
     chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
         model.player = 0;
