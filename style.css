@@ -22,7 +22,7 @@ body {
 }
 
 main {
-    width: 140vh;
+    width: 95vw;
     height: 95vh;
     position: absolute;
     top: 50%;
@@ -35,7 +35,7 @@ main {
 aside {
     position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(0, -50%);
     width: 20%;
     border: 1px solid rgba(45, 205, 229, .5);
     border-radius: 5px;
@@ -56,7 +56,10 @@ aside {
 }
 
 .leftAside {
-    left: 7%;
+    left: 3%;
+}
+.rightAside {
+    right: 3%;
 }
 
 .glowBlue {
@@ -67,9 +70,7 @@ aside {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
 
-.rightAside {
-    left: 93%;
-}
+
 
 #gameboard {
     width: 42vw;
@@ -129,7 +130,7 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
 
-/* ------------------ modal ----------------------*/
+/* ------------------ intro modal ----------------------*/
 
 .modalContainer {
     position: fixed;
@@ -138,6 +139,7 @@ h2 {
     height: 100vh;
     color: white;
     transition: 1s;
+    /*display: none;*/
 }
 
 .modalHeader {
@@ -261,6 +263,5 @@ h2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
 }
-
 
 
