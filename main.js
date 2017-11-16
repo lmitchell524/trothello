@@ -254,7 +254,7 @@ var model = {
         }
     },
     checkWinStats: function(){
-        if (this.chipCount === 64){
+        if (this.chipCount === 64 || this.currentAvailableSpots[0] === undefined){
             if (this.player1ChipCount > this.player2ChipCount) {
                 return 0;
             } else if (this.player1ChipCount < this.player2ChipCount){
@@ -327,7 +327,7 @@ var view = {
         }
     },
     removeModal: function(){
-        $('.modalContainer').css('transform', 'scale(0)');
+        $('.introModalContainer').css('transform', 'scale(0)');
         setTimeout(function(){
             $('main').css('opacity', '1');
         }, 1000);
@@ -390,7 +390,6 @@ var controller = {
     },
     addChipToGame: function() {
         var targetCell = $(this);
-        var player = model.player;
         var targetPosition;
         var y;
         var x;
@@ -405,26 +404,27 @@ var controller = {
 
 
 
-                view.addChipToBoard(targetCell, player);
-                model.addChipData(y, x, player);
+                view.addChipToBoard(targetCell, model.player);
+                model.addChipData(y, x, model.player);
 
                 for (var j=0; j<model.directionCheckFunctions.length; j++){
-                    var currentCheck = model.directionCheckFunctions[j](y, x, player);
+                    var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
                     if (currentCheck){
                         for (var k=0; k<currentCheck.length; k++){
                             view.flipChip(currentCheck[k].location.find('.chip'));
-                            model.flipChipData(currentCheck[k], player);
+                            model.flipChipData(currentCheck[k], model.player);
                         }
                     }
                 }
 
                 view.displayChipCount();
-                model.player = 1 - player;                      //switches player at turn end
-                view.playerTurn(model.player);                  //switches player glow to opposite player at turn end
+                model.player = 1 - model.player;                      //switches player at turn end
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 if(model.currentAvailableSpots[0] === undefined){
-                    model.player = 1 - player;
+                    model.player = 1 - model.player;
+                    model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 }
+                view.playerTurn(model.player); //switches player glow to opposite player at turn end
                 view.addGhostOutlines(model.currentAvailableSpots);
 
                 controller.checkWinState();

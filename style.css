@@ -29,7 +29,7 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: 0.5s;
+    transition: 1s;
 }
 
 aside {
@@ -132,17 +132,16 @@ h2 {
 
 /* ------------------ intro modal ----------------------*/
 
-.modalContainer {
+.introModalContainer {
     position: fixed;
     z-index: 100;
     width: 100vw;
     height: 100vh;
     color: white;
     transition: 1s;
-    /*display: none;*/
 }
 
-.modalHeader {
+.introModalHeader {
     margin-top: 5vw;
     font-size: 4vw;
     text-align: center;
@@ -263,5 +262,26 @@ h2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
 }
+
+/************** win modal **************/
+
+/*.winModalBackground {*/
+    /*position: fixed;*/
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    /*background-color: rgba(0,0,0,0.8);*/
+    /*z-index: 5;*/
+/*}*/
+
+/*.winModalContent {*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+    /*width: 50vw;*/
+    /*height: 50vh;*/
+    /*background-color: #0f192a;*/
+/*}*/
+
 
 
