@@ -12,6 +12,7 @@ function initializeGame(){
 var model = {
     grid: [],
     player: 0,
+    ai: null,
     currentAvailableSpots: null,
     chipCount: null,
     player1ChipCount: null,
@@ -281,7 +282,15 @@ var model = {
         this.player1ChipCount = null;
         this.player2ChipCount = null;
     },
+    getRandomAvailableSpot: function(){
+        var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
+        return this.currentAvailableSpots[spotIndex];
+    }
 };
+
+
+// ------------------------ VIEW -------------------------- //
+
 
 var view = {
     applyClickHandlers: function(){
@@ -362,6 +371,10 @@ var view = {
     },
 };
 
+
+// --------------------------- CONTROLLER ------------------------- //
+
+
 var controller = {
     createBoard: function(){
         view.gameboardCreation();
@@ -372,6 +385,7 @@ var controller = {
         view.playerTurn(model.player);
         model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
         view.addGhostOutlines(model.currentAvailableSpots);
+        model.ai = 1 - model.player;
     },
     chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
         model.player = 0;
@@ -435,17 +449,30 @@ var controller = {
 
                 view.displayChipCount();
                 model.player = 1 - model.player;                      //switches player at turn end
+
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 if(model.currentAvailableSpots[0] === undefined){
                     model.player = 1 - model.player;
                     model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 }
                 view.playerTurn(model.player); //switches player glow to opposite player at turn end
-                view.addGhostOutlines(model.currentAvailableSpots);
+                if (model.player === model.ai){
+                    console.log('it is the computers turn!');
+                    controller.aiMove();
+                } else {
+                    view.addGhostOutlines(model.currentAvailableSpots);
+                }
 
                 controller.checkWinState();
             }
         }
+    },
+    aiMove: function(){
+        var targetSpot = model.getRandomAvailableSpot();
+        setTimeout(function(){
+            targetSpot.location.click();
+
+        }, (Math.random()*1000 + 1000));
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
