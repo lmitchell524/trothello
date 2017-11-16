@@ -11,6 +11,10 @@ var model = {
     grid: [],
     player: 0,
     currentAvailableSpots: null,
+    chipCount: null,
+    player1ChipCount: null,
+    player2ChipCount: null,
+    get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
     CreateGridCell: function(y, x){
         this.occupied = false;
@@ -232,6 +236,9 @@ var model = {
             }
         }
         return false;
+    },
+    flipChipData: function(cellObject){
+        cellObject.player = 1 - cellObject.player;
     }
 };
 
@@ -262,6 +269,15 @@ var view = {
         } else {
             targetCell.find('.chip').removeClass('hideChip').addClass('orange');
         }
+    },
+
+    flipChip: function(domElement){
+        // if (player === 0){
+        //     $(domElement).removeClass('orange').addClass()
+        // } else if (player === 1){
+        //     $(domElement).
+        // }
+        domElement.toggleClass('orange blue');
     }
 };
 
@@ -309,6 +325,16 @@ var controller = {
 
                 view.addChipToBoard(targetCell, player);
                 model.addChipData(y, x, player);
+
+                for (var j=0; j<model.directionCheckFunctions.length; j++){
+                    var currentCheck = model.directionCheckFunctions[j](y, x, player);
+                    if (currentCheck){
+                        for (var k=0; k<currentCheck.length; k++){
+                            view.flipChip(currentCheck[k].location.find('.chip'));
+                            model.flipChipData(currentCheck[k]);
+                        }
+                    }
+                }
 
                 model.player = 1 - player;
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
