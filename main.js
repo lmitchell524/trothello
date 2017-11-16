@@ -511,7 +511,7 @@ var controller = {
         controller.createBoard();
         controller.InitialChips();
         view.displayChipCount();
-        this.gameStart();
+        this.gameStart(model.ai);
     },
     playAgainPlayer1: function(){
         controller.chosePlayer1();
