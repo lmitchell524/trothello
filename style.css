@@ -147,13 +147,15 @@ h2 {
     height: 100vh;
     color: white;
     transition: 1s;
-    /*display: none;*/
 }
 
 .introModalHeader {
-    margin-top: 5vw;
     font-size: 4vw;
     text-align: center;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .playerBox {
@@ -247,22 +249,30 @@ h2 {
     margin: 0;
 }
 
-.playButton {
+.multiButton, .singleButton {
     background-color: white;
     width: 20%;
-    height: 35px;
+    height: 6%;
     border-radius: 5px;
     outline: none;
     position: absolute;
     top: 88vh;
-    left: 50%;
     transform: translate(-50%, -50%);
     border: none;
-    font-family:'Tron', sans-serif;
-    font-size: 1em;
+    font-family: 'Rationale', sans-serif;
+    font-size: 3vw;
+    font-weight: bold;
 }
 
-.playButton:hover {
+.multiButton{
+    left: 63%;
+}
+
+.singleButton {
+    left: 37%;
+}
+
+.multiButton:hover, .singleButton:hover {
     opacity: .5;
     cursor: pointer;
 }
