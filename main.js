@@ -27,13 +27,13 @@ var model = {
             this.grid.push(row);
         }
     },
-    addChipData: function(y, x, player){
+    addChipData: function(y, x, player){  //adds properties to current cell, calls function to make surrounding cells clickable
         var currentCell = this.grid[y][x];
         currentCell.occupied = true;
         currentCell.player = player;
         this.addSurroundingClick(y, x);
     },
-    addSurroundingClick: function(y, x){ //this checks all 8 cells surrounding current cell and changes them to clickable
+    addSurroundingClick: function(y, x){ //checks all 8 cells surrounding current cell and changes them to clickable
         this.grid[y-1][x-1].clickable = true;
         this.grid[y-1][x].clickable = true;
         this.grid[y-1][x+1].clickable = true;
@@ -43,7 +43,7 @@ var model = {
         this.grid[y+1][x].clickable = true;
         this.grid[y+1][x+1].clickable = true;
     },
-    checkSurroundingChips: function(y, x, player){
+    checkSurroundingChips: function(y, x, player){ //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
         var otherPlayer = 1 - player;
         if(this.grid[y-1][x-1].player === otherPlayer){
             if(this.checkUpLeft(y, x, player)){
@@ -232,7 +232,7 @@ var controller = {
         view.gameboardCreation();
         model.createGridArrayMatrix();
     },
-    InitialChips: function() {
+    InitialChips: function() {  //adds the initial four chips to the board at initiation
         view.addChipToBoard(model.grid[3][3], 0);
         view.addChipToBoard(model.grid[3][4], 1);
         view.addChipToBoard(model.grid[4][3], 1);
