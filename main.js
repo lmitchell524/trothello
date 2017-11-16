@@ -523,7 +523,7 @@ var controller = {
             view.addWinnerModal();
         }
     },
-    playAgain: function(){
+    playAgain: function(ai){
         // will need to bind the controller object to "this" when we call this function from our click handler
         view.gameboardAnnihilation();
         model.gridAnnihilation();
@@ -531,17 +531,22 @@ var controller = {
         controller.createBoard();
         controller.InitialChips();
         view.displayChipCount();
+        if (model.ai === null){
+            model.ai = null;
+        } else {
+            model.ai = ai;
+        }
         this.gameStart(model.ai);
     },
     playAgainPlayer1: function(){
         controller.chosePlayer1();
         view.removeWinnerModal();
-        controller.playAgain();
+        controller.playAgain(1);
     },
     playAgainPlayer2: function(){
         controller.chosePlayer2();
         view.removeWinnerModal();
-        controller.playAgain();
+        controller.playAgain(0);
     }
 };
 
