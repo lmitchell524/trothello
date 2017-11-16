@@ -3,11 +3,14 @@ $(document).ready( initializeGame );
 function initializeGame(){
     controller.createBoard();
     controller.InitialChips();
+    model.currentAvailableSpots = controller.checkAvailableSpots(0);
 }
 
 var model = {
     grid: [],
     player: 0,
+    currentAvailableSpots: null,
+
     CreateGridCell: function(y, x){
         this.occupied = false;
         this.location = $('.row:eq('+y+') .cell:eq('+x+')');
