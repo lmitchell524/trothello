@@ -41,7 +41,7 @@ aside {
     border-radius: 5px;
     text-align: center;
     color: white;
-    font-size: 3vw;
+    font-size: 2vw;
 }
 
 .discs, .counter{
@@ -108,10 +108,17 @@ h2 {
 .chip {
     width: 100%;
     height: 100%;
+    cursor: default;
+    transition: 0.25s;
 }
 
 .hideChip {
     display:none;
+}
+
+.chipGhostOutline {
+    display: inline-block;
+    opacity: 0.1;
 }
 
 .blue {
@@ -131,7 +138,7 @@ h2 {
     height: 100vh;
     background-color: lightgrey;
     color: white;
-    /*display: none;*/
+    display: none;
 }
 
 .modalHeader {

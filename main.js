@@ -5,6 +5,7 @@ function initializeGame(){
     view.applyClickHandlers();
     controller.InitialChips();
     model.currentAvailableSpots = controller.checkAvailableSpots(0);
+    view.addGhostOutlines(model.currentAvailableSpots)
 }
 
 var model = {
@@ -275,13 +276,23 @@ var view = {
         domElement.toggleClass('orange blue');
     },
 
-    playerTurn: function(player){
-        if(player === 0){
+    playerTurn: function(player) {
+        if (player === 0) {
             $('.leftAside').addClass('glowBlue');
             $('.rightAside').removeClass('glowOrange');
-        } else if (player === 1){
+        } else if (player === 1) {
             $('.rightAside').addClass('glowOrange');
             $('.leftAside').removeClass('glowBlue');
+        }
+    },
+    removeGhostOutlines: function(cellArray){
+        for (var i=0; i<cellArray.length; i++){
+            cellArray[i].location.find('.chip').removeClass('chipGhostOutline')
+        }
+    },
+    addGhostOutlines: function(cellArray){
+        for (var i=0; i<cellArray.length; i++){
+            cellArray[i].location.find('.chip').addClass('chipGhostOutline');
         }
     }
 };
@@ -315,7 +326,7 @@ var controller = {
         return available;
     },
     addChipToGame: function(event) {
-        var targetCell = $(event.target);
+        var targetCell = $(this);
         var player = model.player;
         var targetPosition;
         var y;
@@ -326,6 +337,9 @@ var controller = {
                 targetPosition = targetCell.attr('position').split('-');
                 y = parseInt(targetPosition[0]);
                 x = parseInt(targetPosition[1]);
+
+                view.removeGhostOutlines(model.currentAvailableSpots);
+
 
 
                 view.addChipToBoard(targetCell, player);
@@ -346,6 +360,7 @@ var controller = {
                 if(model.currentAvailableSpots[0] === undefined){
                     model.player = 1 - player;
                 }
+                view.addGhostOutlines(model.currentAvailableSpots);
             }
         }
     }
