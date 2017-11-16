@@ -30,7 +30,7 @@ var model = {
         currentCell.player = player;
         this.addSurroundingClick(y, x);
     },
-    addSurroundingClick: function(y, x){
+    addSurroundingClick: function(y, x){ //this checks all 8 cells surrounding current cell and changes them to clickable
         this.grid[y-1][x-1].clickable = true;
         this.grid[y-1][x].clickable = true;
         this.grid[y-1][x+1].clickable = true;
@@ -39,7 +39,35 @@ var model = {
         this.grid[y+1][x-1].clickable = true;
         this.grid[y+1][x].clickable = true;
         this.grid[y+1][x+1].clickable = true;
-    }
+    },
+    checkSurroundingChips: function(y, x, player){
+        var array = [];
+        var otherPlayer = 1 - player;
+        if(this.grid[y-1][x-1].player === otherPlayer){
+            array.push(1);
+        }
+        if(this.grid[y-1][x].player === otherPlayer){
+            array.push(2);
+        }
+        if(this.grid[y-1][x+1].player === otherPlayer){
+            array.push(3);
+        }
+        if(this.grid[y][x+1].player === otherPlayer){
+            array.push(4);
+        }
+        if(this.grid[y+1][x+1].player === otherPlayer){
+            array.push(5);
+        }
+        if(this.grid[y+1][x].player === otherPlayer){
+            array.push(6);
+        }
+        if(this.grid[y+1][x-1].player === otherPlayer){
+            array.push(7);
+        }
+        if(this.grid[y][x-1].player === otherPlayer){
+            array.push(8);
+        } return array;
+    },
 
 };
 
