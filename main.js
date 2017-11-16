@@ -17,6 +17,7 @@ var model = {
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
+    aiTurn: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
     CreateGridCell: function(y, x){
@@ -283,8 +284,17 @@ var model = {
         this.player2ChipCount = null;
     },
     getRandomAvailableSpot: function(){
-        var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
-        return this.currentAvailableSpots[spotIndex];
+        var highestPriorityIndex = 0;
+        for (var i=0; i<model.currentAvailableSpots.length; i++){
+            var position = parseInt(model.currentAvailableSpots[i].location.attr('position').split('-'));
+            var y = position[0];
+            var x = position[1];
+            if (x === 0 || x === 7 || y === 0 || y === 7){
+                highestPriorityIndex = i;
+            }
+        }
+        // var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
+        return this.currentAvailableSpots[highestPriorityIndex];
     }
 };
 
@@ -419,60 +429,64 @@ var controller = {
         return available;
     },
     addChipToGame: function() {
-        var targetCell = $(this);
-        var targetPosition;
-        var y;
-        var x;
+        if (!model.aiTurn) {
+            var targetCell = $(this);
+            var targetPosition;
+            var y;
+            var x;
 
-        for (var i=0; i<model.currentAvailableSpots.length; i++) {
-            if (targetCell[0] === model.currentAvailableSpots[i].location[0]){
-                targetPosition = targetCell.attr('position').split('-');
-                y = parseInt(targetPosition[0]);
-                x = parseInt(targetPosition[1]);
+            for (var i = 0; i < model.currentAvailableSpots.length; i++) {
+                if (targetCell[0] === model.currentAvailableSpots[i].location[0]) {
+                    targetPosition = targetCell.attr('position').split('-');
+                    y = parseInt(targetPosition[0]);
+                    x = parseInt(targetPosition[1]);
 
-                view.removeGhostOutlines(model.currentAvailableSpots);
+                    view.removeGhostOutlines(model.currentAvailableSpots);
 
 
+                    view.addChipToBoard(targetCell, model.player);
+                    model.addChipData(y, x, model.player);
 
-                view.addChipToBoard(targetCell, model.player);
-                model.addChipData(y, x, model.player);
-
-                for (var j=0; j<model.directionCheckFunctions.length; j++){
-                    var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
-                    if (currentCheck){
-                        for (var k=0; k<currentCheck.length; k++){
-                            view.flipChip(currentCheck[k].location.find('.chip'));
-                            model.flipChipData(currentCheck[k], model.player);
+                    for (var j = 0; j < model.directionCheckFunctions.length; j++) {
+                        var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
+                        if (currentCheck) {
+                            for (var k = 0; k < currentCheck.length; k++) {
+                                view.flipChip(currentCheck[k].location.find('.chip'));
+                                model.flipChipData(currentCheck[k], model.player);
+                            }
                         }
                     }
-                }
 
-                view.displayChipCount();
-                model.player = 1 - model.player;                      //switches player at turn end
+                    view.displayChipCount();
+                    model.player = 1 - model.player;                      //switches player at turn end
 
-                model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                if(model.currentAvailableSpots[0] === undefined){
-                    model.player = 1 - model.player;
                     model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                }
-                view.playerTurn(model.player); //switches player glow to opposite player at turn end
-                if (model.player === model.ai){
-                    console.log('it is the computers turn!');
-                    controller.aiMove();
-                } else {
-                    view.addGhostOutlines(model.currentAvailableSpots);
-                }
+                    if (model.currentAvailableSpots[0] === undefined) {
+                        model.player = 1 - model.player;
+                        model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+                    }
+                    view.playerTurn(model.player); //switches player glow to opposite player at turn end
+                    if (model.player === model.ai) {
+                        controller.aiMove();
+                    } else {
+                        view.addGhostOutlines(model.currentAvailableSpots);
+                    }
 
-                controller.checkWinState();
+                    controller.checkWinState();
+                }
             }
         }
     },
     aiMove: function(){
         var targetSpot = model.getRandomAvailableSpot();
-        setTimeout(function(){
-            targetSpot.location.click();
+        model.aiTurn = true;
+        if (targetSpot) {
+            setTimeout(function () {
+                model.aiTurn = false;
+                targetSpot.location.click();
 
-        }, (Math.random()*1000 + 1000));
+            }, (Math.random() * 1000 + 1000));
+        }
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
