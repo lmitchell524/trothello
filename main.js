@@ -282,13 +282,19 @@ var model = {
         this.player1ChipCount = null;
         this.player2ChipCount = null;
     },
-    getRandomAvailableSpot: function(){
+    getAiSpot: function(){
         var highestPriorityIndex = 0;
         for (var i=0; i<model.currentAvailableSpots.length; i++){
             var position = parseInt(model.currentAvailableSpots[i].location.attr('position').split('-'));
             var y = position[0];
             var x = position[1];
-            if (x === 0 || x === 7 || y === 0 || y === 7){
+
+            if (x === 0 || y === 0){
+                if (x === 7 || y === 7){
+                    return this.currentAvailableSpots[i]
+                }
+                highestPriorityIndex = i;
+            } else if (y === 0 || y === 7){
                 highestPriorityIndex = i;
             }
         }
@@ -368,7 +374,7 @@ var view = {
         $('.counter1').text(model.player1ChipCount);
         $('.counter2').text(model.player2ChipCount);
     },
-    addPlayer1Glow: function(){                         //add glow to player selection in intro model
+    addPlayer1Glow: function(){      //add glow to player selection in intro model
         $('.playerBox1').addClass('playerBox1Clicked');
         $('.playerBox2').removeClass('playerBox2Clicked');
         $('.playerBox1Win').addClass('playerBox1WinClicked');
@@ -384,7 +390,7 @@ var view = {
         $('.winModalContent').css('transform', 'scale(1)');
     },
     removeWinnerModal: function(){
-        $('.winModalContent').hide();
+        $('.winModalContent').css('transform', 'scale(0)');
         controller.playAgain();
     },
     gameboardAnnihilation: function(){
@@ -489,7 +495,7 @@ var controller = {
         }
     },
     aiMove: function(){
-        var targetSpot = model.getRandomAvailableSpot();
+        var targetSpot = model.getAiSpot();
         model.aiTurn = true;
         if (targetSpot) {
             setTimeout(function () {
