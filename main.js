@@ -85,14 +85,18 @@ var controller = {
         model.addChipData(4, 3, 1);
         model.addChipData(4, 4, 0);
     },
-    checkAvailableSpots: function(){
+    checkAvailableSpots: function(player){
+        var available = [];
         for(var i = 0; i < model.grid.length; i++){
             for(var j = 0; j < model.grid[i].length; j++){
                 if(model.grid[i][j].occupied === false && model.grid[i][j].clickable === true){
-                    console.log("test");
+                    if(model.checkSurroundingChips(i, j, player)){
+                        available.push(model.grid[i][j]);
+                    }
                 }
             }
         }
+        return available;
     }
 };
 
