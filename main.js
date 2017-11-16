@@ -4,8 +4,7 @@ function initializeGame(){
     controller.createBoard();
     view.applyClickHandlers();
     controller.InitialChips();
-    model.currentAvailableSpots = controller.checkAvailableSpots(0);
-    view.addGhostOutlines(model.currentAvailableSpots)
+    view.displayChipCount();
 }
 
 var model = {
@@ -33,7 +32,7 @@ var model = {
             this.grid.push(row);
         }
     },
-    addChipData: function(y, x, player){  //adds properties to current cell, calls function to make surrounding cells clickable
+    addChipData: function(y, x, player){                //adds properties to current cell, calls function to make surrounding cells clickable
         var currentCell = this.grid[y][x];
         currentCell.occupied = true;
         currentCell.player = player;
@@ -45,7 +44,7 @@ var model = {
             this.player2ChipCount++;
         }
     },
-    addSurroundingClick: function(y, x){ //checks all 8 cells surrounding current cell and changes them to clickable
+    addSurroundingClick: function(y, x){                //checks all 8 cells surrounding current cell and changes them to clickable
         if (y-1>=0 && x-1>=0) {
             this.grid[y - 1][x - 1].clickable = true;
         }
@@ -71,7 +70,7 @@ var model = {
             this.grid[y+1][x+1].clickable = true;
         }
     },
-    checkSurroundingChips: function(y, x, player){ //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
+    checkSurroundingChips: function(y, x, player){          //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
         var otherPlayer = 1 - player;
 
         if (y-1>=0 && x-1>=0) {
@@ -275,7 +274,9 @@ var model = {
 var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
-        $('.playButton').on('click', view.removeModal);
+        $('.playButton').on('click', controller.gameStart);
+        $('.playerBox1').on('click', controller.chosePlayer1);
+        $('.playerBox2').on('click', controller.chosePlayer2);
     },
     gameboardCreation: function() {
         for (var i = 0; i < 8; i++) {
@@ -306,7 +307,7 @@ var view = {
         domElement.toggleClass('orange blue');
     },
 
-    playerTurn: function(player) {
+    playerTurn: function(player) {                  //adds glow class to player stats to show player turn, removes glow from opponent
         if (player === 0) {
             $('.leftAside').addClass('glowBlue');
             $('.rightAside').removeClass('glowOrange');
@@ -320,7 +321,7 @@ var view = {
             cellArray[i].location.find('.chip').removeClass('chipGhostOutline')
         }
     },
-    addGhostOutlines: function(cellArray){
+    addGhostOutlines: function(cellArray){           //displays light outline of disc to show player available moves
         for (var i=0; i<cellArray.length; i++){
             cellArray[i].location.find('.chip').addClass('chipGhostOutline');
         }
@@ -330,6 +331,18 @@ var view = {
         setTimeout(function(){
             $('main').css('opacity', '1');
         }, 1000);
+    },
+    displayChipCount: function(){
+        $('.counter1').text(model.player1ChipCount);
+        $('.counter2').text(model.player2ChipCount);
+    },
+    addPlayer1Glow: function(){                         //add glow to player selection in model
+        $('.playerBox1').addClass('playerBox1Clicked');
+        $('.playerBox2').removeClass('playerBox2Clicked');
+    },
+    addPlayer2Glow: function(){                         //add glow to player selection in model
+        $('.playerBox2').addClass('playerBox2Clicked');
+        $('.playerBox1').removeClass('playerBox1Clicked');
     }
 };
 
@@ -337,6 +350,20 @@ var controller = {
     createBoard: function(){
         view.gameboardCreation();
         model.createGridArrayMatrix();
+    },
+    gameStart: function(){ //called when 'enter' button is clicked. Removes model, checks positions available for player one, based on user choice.
+        view.removeModal();
+        view.playerTurn(model.player);
+        model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+        view.addGhostOutlines(model.currentAvailableSpots);
+    },
+    chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
+        model.player = 0;
+        view.addPlayer1Glow();
+    },
+    chosePlayer2: function(){ //changes player data in model object to reflect users player choice, lights up in model
+        model.player = 1;
+        view.addPlayer2Glow();
     },
     InitialChips: function() {  //adds the initial four chips to the board at initiation
         view.addChipToBoard($(model.grid[3][3].location), 0);
@@ -348,7 +375,7 @@ var controller = {
         model.addChipData(4, 3, 1);
         model.addChipData(4, 4, 0);
     },
-    checkAvailableSpots: function(player){
+    checkAvailableSpots: function(player){      //checks all 8 surrounding positions for available plays based on opponent discs and makes them clickable.
         var available = [];
         for(var i = 0; i < model.grid.length; i++){
             for(var j = 0; j < model.grid[i].length; j++){
@@ -391,7 +418,9 @@ var controller = {
                     }
                 }
 
-                model.player = 1 - player;
+                view.displayChipCount();
+                model.player = 1 - player;                      //switches player at turn end
+                view.playerTurn(model.player);                  //switches player glow to opposite player at turn end
                 model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
                 if(model.currentAvailableSpots[0] === undefined){
                     model.player = 1 - player;
