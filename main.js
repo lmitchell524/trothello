@@ -509,12 +509,12 @@ var controller = {
     aiMove: function(){
         var targetSpot = model.getAiSpot();
         model.aiTurn = true;
-        if (targetSpot) {
-            setTimeout(function () {
-                model.aiTurn = false;
-                targetSpot.location.click();
-            }, (Math.random() * 1000 + 1000));
-        }
+        setTimeout(function() {
+            model.aiTurn = false;
+            if (targetSpot) {
+               targetSpot.location.click();
+            }
+        }, (Math.random() * 1000 + 1000));
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
