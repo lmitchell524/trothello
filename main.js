@@ -599,7 +599,7 @@ var gameboard = null;
                     g = -9.8; // And gravity is -9.8. If you live on another planet feel free to change
 
                 // $(this) as self
-                var self = $(this);
+                // var self = $(this);
 
                 // time is initially zero, also set some random variables. It's higher than the total time for the projectile motion
                 // because we want the squares to go off screen.
@@ -640,7 +640,7 @@ var gameboard = null;
                     // If the time is greater than the total time clear the interval
                     if(t > totalt) {
 
-                        clicked = false;
+                        let clicked = false;
                         first = true;
 
 
