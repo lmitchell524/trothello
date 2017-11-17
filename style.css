@@ -221,7 +221,6 @@ h2 {
 
 .playerName {
     position: relative;
-    bottom: 10%;
     font-size: 4vw;
     top: 85%;
 }
@@ -367,4 +366,15 @@ h2 {
 
 .cell, .cell div {
     position: relative;
+}
+
+
+@media screen and (max-width: 736px){
+    .directionsList {
+        padding-left: 10px;
+    }
+
+    .directions > h2 {
+        font-size: 1.5em;
+    }
 }

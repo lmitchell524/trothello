@@ -8,7 +8,6 @@ function initializeGame(){
     view.displayChipCount();
 }
 
-
 var model = {
     grid: [],
     player: 0,
@@ -26,7 +25,7 @@ var model = {
         this.player = null;
         this.clickable = false;
     },
-    createGridArrayMatrix: function(){          //creates 8x8 grid. Outter loop creates 8 rows; Inner loop creates 8 cells within and pushes into the row array per loop. Pushes to grid array at the end.
+    createGridArrayMatrix: function(){          //creates 8x8 grid. Outer loop creates 8 rows; Inner loop creates 8 cells within and pushes into the row array per loop. Pushes to grid array at the end.
         for (var y=0; y<8; y++){
             var row = [];
             for (var x=0; x<8; x++){
