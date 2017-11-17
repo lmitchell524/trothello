@@ -17,6 +17,7 @@ var model = {
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
+    aiTurn: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
     CreateGridCell: function(y, x){
@@ -281,9 +282,23 @@ var model = {
         this.player1ChipCount = null;
         this.player2ChipCount = null;
     },
-    getRandomAvailableSpot: function(){
-        var spotIndex = Math.floor(Math.random() * this.currentAvailableSpots.length);
-        return this.currentAvailableSpots[spotIndex];
+    getAiSpot: function(){
+        var highestPriorityIndex = 0;
+        for (var i=0; i<model.currentAvailableSpots.length; i++){
+            var position = parseInt(model.currentAvailableSpots[i].location.attr('position').split('-'));
+            var y = position[0];
+            var x = position[1];
+
+            if (x === 0 || y === 0){
+                if (x === 7 || y === 7){
+                    return this.currentAvailableSpots[i]
+                }
+                highestPriorityIndex = i;
+            } else if (y === 0 || y === 7){
+                highestPriorityIndex = i;
+            }
+        }
+        return this.currentAvailableSpots[highestPriorityIndex];
     }
 };
 
@@ -294,7 +309,12 @@ var model = {
 var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
-        $('.playButton').on('click', controller.gameStart);
+        $('.singleButton').on('click', function(){
+            controller.gameStart(1-model.player);
+        });
+        $('.multiButton').on('click', function(){
+            controller.gameStart(null);
+        });
         $('.playerBox1').on('click', controller.chosePlayer1);
         $('.playerBox2').on('click', controller.chosePlayer2);
         $('.playerBox1Win').on('click', controller.playAgainPlayer1);
@@ -315,6 +335,7 @@ var view = {
             }
             $('#gameboard').append(row);
         }
+        $('#gameboard').css('top', '50%');
     },
 
     addChipToBoard: function(targetCell, player){
@@ -358,7 +379,7 @@ var view = {
         $('.counter1').text(model.player1ChipCount);
         $('.counter2').text(model.player2ChipCount);
     },
-    addPlayer1Glow: function(){                         //add glow to player selection in intro model
+    addPlayer1Glow: function(){      //add glow to player selection in intro model
         $('.playerBox1').addClass('playerBox1Clicked');
         $('.playerBox2').removeClass('playerBox2Clicked');
         $('.playerBox1Win').addClass('playerBox1WinClicked');
@@ -374,7 +395,7 @@ var view = {
         $('.winModalContent').css('transform', 'scale(1)');
     },
     removeWinnerModal: function(){
-        $('.winModalContent').hide();
+        $('.winModalContent').css('transform', 'scale(0)');
         controller.playAgain();
     },
     gameboardAnnihilation: function(){
@@ -391,12 +412,12 @@ var controller = {
         view.gameboardCreation();
         model.createGridArrayMatrix();
     },
-    gameStart: function(){ //called when 'enter' button is clicked. Removes model, checks positions available for player one, based on user choice.
+    gameStart: function(numberOfPlayers){ //called when 'enter' button is clicked. Removes model, checks positions available for player one, based on user choice.
         view.removeModal();
         view.playerTurn(model.player);
         model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
         view.addGhostOutlines(model.currentAvailableSpots);
-        model.ai = 1 - model.player;
+        model.ai = numberOfPlayers;
     },
     chosePlayer1: function(){ //changes player data in model object to reflect users player choice, lights up in model
         model.player = 0;
@@ -430,79 +451,87 @@ var controller = {
         return available;
     },
     addChipToGame: function() {
-        var targetCell = $(this);
-        var targetPosition;
-        var y;
-        var x;
+        if (!model.aiTurn) {
+            var targetCell = $(this);
+            var targetPosition;
+            var y;
+            var x;
 
-        for (var i=0; i<model.currentAvailableSpots.length; i++) {
-            if (targetCell[0] === model.currentAvailableSpots[i].location[0]){
-                targetPosition = targetCell.attr('position').split('-');
-                y = parseInt(targetPosition[0]);
-                x = parseInt(targetPosition[1]);
+            for (var i = 0; i < model.currentAvailableSpots.length; i++) {
+                if (targetCell[0] === model.currentAvailableSpots[i].location[0]) {
+                    targetPosition = targetCell.attr('position').split('-');
+                    y = parseInt(targetPosition[0]);
+                    x = parseInt(targetPosition[1]);
 
-                view.removeGhostOutlines(model.currentAvailableSpots);
+                    view.removeGhostOutlines(model.currentAvailableSpots);
 
 
+                    view.addChipToBoard(targetCell, model.player);
+                    model.addChipData(y, x, model.player);
 
-                view.addChipToBoard(targetCell, model.player);
-                model.addChipData(y, x, model.player);
-
-                for (var j=0; j<model.directionCheckFunctions.length; j++){
-                    var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
-                    if (currentCheck){
-                        for (var k=0; k<currentCheck.length; k++){
-                            // prepareExploders(currentCheck[k].location.find('.chip'), true);
-                            view.flipChip(currentCheck[k].location.find('.chip'));
-                            model.flipChipData(currentCheck[k], model.player);
+                    for (var j = 0; j < model.directionCheckFunctions.length; j++) {
+                        var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
+                        if (currentCheck) {
+                            for (var k = 0; k < currentCheck.length; k++) {
+                                view.flipChip(currentCheck[k].location.find('.chip'));
+                                model.flipChipData(currentCheck[k], model.player);
+                            }
                         }
                     }
-                }
 
-                view.displayChipCount();
-                model.player = 1 - model.player;                      //switches player at turn end
+                    view.displayChipCount();
+                    model.player = 1 - model.player;  //switches player at turn end
 
-                model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                if(model.currentAvailableSpots[0] === undefined){
-                    model.player = 1 - model.player;
                     model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                }
-                view.playerTurn(model.player); //switches player glow to opposite player at turn end
-                if (model.player === model.ai){
-                    console.log('it is the computers turn!');
-                    controller.aiMove();
-                } else {
-                    view.addGhostOutlines(model.currentAvailableSpots);
-                }
+                    if (model.currentAvailableSpots[0] === undefined) {
+                        model.player = 1 - model.player;
+                        model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+                    }
+                    view.playerTurn(model.player); //switches player glow to opposite player at turn end
+                    if (model.player === model.ai) {
+                        controller.aiMove();
+                    } else {
+                        view.addGhostOutlines(model.currentAvailableSpots);
+                    }
 
-                controller.checkWinState();
+                    controller.checkWinState();
+                }
             }
         }
     },
     aiMove: function(){
-        var targetSpot = model.getRandomAvailableSpot();
-        setTimeout(function(){
-            targetSpot.location.click();
+        var targetSpot = model.getAiSpot();
+        model.aiTurn = true;
+        if (targetSpot) {
+            setTimeout(function () {
+                model.aiTurn = false;
+                targetSpot.location.click();
 
-        }, (Math.random()*1000 + 1000));
+            }, (Math.random() * 1000 + 1000));
+        }
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
         if (winState === 0){
-            // $('.winnerModalHeader').text('Tron Wins!');
-            // view.addWinnerModal();
+            setTimeout(function(){
+                $('.winnerModalHeader').text('Tron Wins!');
+                view.addWinnerModal();
+            }, 1000);
             explodeElement();
         } else if (winState === 1){
-            // $('.winnerModalHeader').text('Clu Wins!');
-            // view.addWinnerModal();
+            setTimeout(function(){
+                $('.winnerModalHeader').text('Clu Wins!');
+                view.addWinnerModal();
+            }, 1000);
             explodeElement();
         } else if (winState === 2){
-            $('.winnerModalHeader').text('It\'s a draw!');
-            view.addWinnerModal();
-            // explodeElement();
+            setTimeout(function() {
+                $('.winnerModalHeader').text('It\'s a draw!');
+                view.addWinnerModal();
+            }, 1000);
         }
     },
-    playAgain: function(){
+    playAgain: function(ai){
         // will need to bind the controller object to "this" when we call this function from our click handler
         view.gameboardAnnihilation();
         model.gridAnnihilation();
@@ -510,17 +539,22 @@ var controller = {
         controller.createBoard();
         controller.InitialChips();
         view.displayChipCount();
-        this.gameStart();
+        if (model.ai === null){
+            model.ai = null;
+        } else {
+            model.ai = ai;
+        }
+        this.gameStart(model.ai);
     },
     playAgainPlayer1: function(){
         controller.chosePlayer1();
         view.removeWinnerModal();
-        controller.playAgain();
+        controller.playAgain(1);
     },
     playAgainPlayer2: function(){
         controller.chosePlayer2();
         view.removeWinnerModal();
-        controller.playAgain();
+        controller.playAgain(0);
     }
 };
 
