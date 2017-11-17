@@ -351,6 +351,7 @@ h2 {
     -webkit-transition: top 1.2s linear;
     transition: top 1.2s linear;
 }
+
 .cell .chip {
     color: #fff;
     font-size: 1em;
@@ -368,7 +369,15 @@ h2 {
     position: relative;
 }
 
-
+.cell div{
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+    z-index: -1;
+    position: absolute;
+    top: auto;
+    left: 0;
+}
 @media screen and (max-width: 736px){
     .directionsList {
         padding-left: 10px;
