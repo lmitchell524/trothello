@@ -8,7 +8,6 @@ function initializeGame(){
     view.displayChipCount();
 }
 
-
 var model = {
     grid: [],
     player: 0,
@@ -26,7 +25,7 @@ var model = {
         this.player = null;
         this.clickable = false;
     },
-    createGridArrayMatrix: function(){
+    createGridArrayMatrix: function(){          //creates 8x8 grid. Outer loop creates 8 rows; Inner loop creates 8 cells within and pushes into the row array per loop. Pushes to grid array at the end.
         for (var y=0; y<8; y++){
             var row = [];
             for (var x=0; x<8; x++){
@@ -285,9 +284,10 @@ var model = {
     getAiSpot: function(){
         var highestPriorityIndex = 0;
         for (var i=0; i<model.currentAvailableSpots.length; i++){
-            var position = parseInt(model.currentAvailableSpots[i].location.attr('position').split('-'));
-            var y = position[0];
-            var x = position[1];
+            var position = model.currentAvailableSpots[i].location.attr('position').split('-');
+            var y = parseInt(position[0]);
+            var x = parseInt(position[1]);
+            console.log(y, x);
 
             if (x === 0 || y === 0){
                 if (x === 7 || y === 7){
@@ -513,7 +513,6 @@ var controller = {
             setTimeout(function () {
                 model.aiTurn = false;
                 targetSpot.location.click();
-
             }, (Math.random() * 1000 + 1000));
         }
     },
@@ -569,9 +568,32 @@ var controller = {
 
 var gameboard = null;
 
+(genClips = function() {
+    gameboard = $('.clipped-box');
+    var amount = 5;
+    var width = gameboard.width() / amount;
+    var height = gameboard.height() / amount;
+    var y = 0;
+
+    for(var row = 0; row < amount; row++){
+        for(var col =0; col < amount; col++){
+            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+            var piece = $("<div>",{
+                'class': 'clipped',
+                css:{
+                    clip: thisClip,
+                }
+            });
+            piece.appendTo(gameboard);
+        }
+    }
+})();
+
 function rand(min, max) {
     return Math.floor(Math.random() * (max - 1)) + min;
 }
+
+var first = false;
 
 function explodeElement(){
     gameboard = $('.clipped-box');
@@ -620,7 +642,7 @@ function explodeElement(){
                 $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
                 clearInterval(z);
             }
-        }, 1);
+        }, 50);
     });
 }
 
