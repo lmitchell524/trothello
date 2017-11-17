@@ -346,3 +346,35 @@ h2 {
 .playerBox2WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
+
+/*  EXPLOSION TEST CODE  */
+
+/*.row {*/
+    /*position: relative;*/
+    /*margin: 0px auto;*/
+/*}*/
+
+.cell {
+    -webkit-transition: top 1.2s linear;
+    transition: top 1.2s linear;
+}
+.cell div {
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+    /*box-sizing: border-box;*/
+    -moz-box-sizing: border-box;
+    z-index:-1;
+}
+
+.cell, .cell div {
+    position: relative;
+}
+
+.cell div {
+    position: absolute;
+    top: auto;
+    left: 0;
+    -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
+    transition: transform 1.4s ease-in, background 0.3s ease-in;
+}
