@@ -16,7 +16,8 @@ var model = {
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
-    turnInProgress: false,
+    humanTurn: false,
+    aiTurn: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
     CreateGridCell: function(y, x){
@@ -282,8 +283,8 @@ var model = {
         this.player2ChipCount = null;
     },
     getAiSpot: function(){
-        var cSpot = [];
-        var xSpot = [];
+        var badSpots = [];
+        var goodSpots = [];
         for (var i=0; i<model.currentAvailableSpots.length; i++){
             var position = model.currentAvailableSpots[i].location.attr('position');
 
@@ -299,9 +300,7 @@ var model = {
                     if (model.grid[0][0].player === model.ai){
                         return this.currentAvailableSpots[i]
                     }
-                    cSpot.push(this.currentAvailableSpots[i]);
-                    this.currentAvailableSpots.splice(i, 1);
-                    i--;
+                    badSpots.push(this.currentAvailableSpots[i]);
                     break;
                 case '0-6':
                 case '1-7':
@@ -309,9 +308,7 @@ var model = {
                     if (model.grid[0][7].player === model.ai){
                         return this.currentAvailableSpots[i]
                     }
-                    cSpot.push(this.currentAvailableSpots[i]);
-                    this.currentAvailableSpots.splice(i, 1);
-                    i--;
+                    badSpots.push(this.currentAvailableSpots[i]);
                     break;
                 case '6-0':
                 case '7-1':
@@ -319,9 +316,7 @@ var model = {
                     if (model.grid[7][0].player === model.ai){
                         return this.currentAvailableSpots[i]
                     }
-                    cSpot.push(this.currentAvailableSpots[i]);
-                    this.currentAvailableSpots.splice(i, 1);
-                    i--;
+                    badSpots.push(this.currentAvailableSpots[i]);
                     break;
                 case '7-6':
                 case '6-7':
@@ -329,12 +324,18 @@ var model = {
                     if (model.grid[7][7].player === model.ai){
                         return this.currentAvailableSpots[i]
                     }
-                    i--;
-                    cSpot.push(this.currentAvailableSpots[i]);
-                    this.currentAvailableSpots.splice(i, 1);
+                    badSpots.push(this.currentAvailableSpots[i]);
+                    break;
+                default:
+                    goodSpots.push(this.currentAvailableSpots[i]);
             }
         }
-        return this.currentAvailableSpots[0];
+        if (goodSpots[0]){
+            return goodSpots[Math.floor(Math.random()*goodSpots.length)];
+        } else {
+            return badSpots[Math.floor(Math.random()*badSpots.length)];
+        }
+
     }
 };
 
@@ -487,8 +488,8 @@ var controller = {
         return available;
     },
     addChipToGame: function() {
-        if (!model.turnInProgress) {
-            model.turnInProgress = true;
+        if (!model.humanTurn && !model.aiTurn) {
+            model.humanTurn = true;
             var targetCell = $(this);
             var targetPosition;
             var y;
@@ -517,8 +518,7 @@ var controller = {
                             }
                         }
                     }
-
-
+                    prepareExploders(cellsToExplode, 'sequential', afterMove);
                 }
             }
             function afterMove() {
@@ -539,16 +539,16 @@ var controller = {
 
                 controller.checkWinState();
             }
-            console.log("chips to explode: " , cellsToExplode);
-            prepareExploders(cellsToExplode, 'sequential', afterMove);
-            model.turnInProgress = false;
+            setTimeout(function(){
+                model.humanTurn = false;
+            }, 500)
         }
     },
     aiMove: function(){
+        model.aiTurn = true;
         var targetSpot = model.getAiSpot();
-        model.turnInProgress = true;
         setTimeout(function() {
-            model.turnInProgress = false;
+            model.aiTurn = false;
             if (targetSpot) {
                targetSpot.location.click();
             }
@@ -602,86 +602,90 @@ var controller = {
     }
 };
 
-// EXPLOSION CODE
 
-var gameboard = null;
 
-(genClips = function() {
-    gameboard = $('.clipped-box');
-    var amount = 5;
-    var width = gameboard.width() / amount;
-    var height = gameboard.height() / amount;
-    var y = 0;
 
-    for(var row = 0; row < amount; row++){
-        for(var col =0; col < amount; col++){
-            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-            var piece = $("<div>",{
-                'class': 'clipped',
-                css:{
-                    clip: thisClip,
-                }
-            });
-            piece.appendTo(gameboard);
-        }
-    }
-})();
-
-function rand(min, max) {
-    return Math.floor(Math.random() * (max - 1)) + min;
-}
-
-var first = false;
-
-function explodeElement(){
-    gameboard = $('.clipped-box');
-    var amount = 5;
-    var width = gameboard.width() / amount;
-    var height = gameboard.height() / amount;
-
-    for(var row = 0; row < amount; row++){
-        for(var col =0; col < amount; col++){
-            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-            var piece = $("<div>",{
-                'class': 'clipped',
-                css:{
-                    clip: thisClip,
-                }
-            });
-            piece.appendTo(gameboard);
-        }
-    }
-
-    $('.clipped-box .content').css({'display' : 'none'});
-    $('.clipped-box div:not(.content)').each(function() {
-        var v = rand(120, 90),
-            angle = rand(80, 89),
-            theta = (angle * Math.PI) / 180,
-            g = -9.8;
-
-        var self = $(this);
-
-        var t = 0,
-            z, nx, ny,
-            totalt =  15;
-
-        var negate = [1, -1, 0];
-        var direction = negate[ Math.floor(Math.random() * negate.length) ];
-
-        z = setInterval(function() {
-            var ux = ( Math.cos(theta) * v ) * direction;
-            var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
-            nx = (ux * t);
-            ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
-            $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
-            t = t + 1;
-            if(t > totalt) {
-                $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
-                $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
-                clearInterval(z);
-            }
-        }, 50);
-    });
-}
+//
+// // EXPLOSION CODE
+//
+// var gameboard = null;
+//
+// (genClips = function() {
+//     gameboard = $('.clipped-box');
+//     var amount = 5;
+//     var width = gameboard.width() / amount;
+//     var height = gameboard.height() / amount;
+//     var y = 0;
+//
+//     for(var row = 0; row < amount; row++){
+//         for(var col =0; col < amount; col++){
+//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+//             var piece = $("<div>",{
+//                 'class': 'clipped',
+//                 css:{
+//                     clip: thisClip,
+//                 }
+//             });
+//             piece.appendTo(gameboard);
+//         }
+//     }
+// })();
+//
+// function rand(min, max) {
+//     return Math.floor(Math.random() * (max - 1)) + min;
+// }
+//
+// var first = false;
+//
+// function explodeElement(){
+//     gameboard = $('.clipped-box');
+//     var amount = 5;
+//     var width = gameboard.width() / amount;
+//     var height = gameboard.height() / amount;
+//
+//     for(var row = 0; row < amount; row++){
+//         for(var col =0; col < amount; col++){
+//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+//             var piece = $("<div>",{
+//                 'class': 'clipped',
+//                 css:{
+//                     clip: thisClip,
+//                 }
+//             });
+//             piece.appendTo(gameboard);
+//         }
+//     }
+//
+//     $('.clipped-box .content').css({'display' : 'none'});
+//     $('.clipped-box div:not(.content)').each(function() {
+//         var v = rand(120, 90),
+//             angle = rand(80, 89),
+//             theta = (angle * Math.PI) / 180,
+//             g = -9.8;
+//
+//         var self = $(this);
+//
+//         var t = 0,
+//             z, nx, ny,
+//             totalt =  15;
+//
+//         var negate = [1, -1, 0];
+//         var direction = negate[ Math.floor(Math.random() * negate.length) ];
+//
+//         z = setInterval(function() {
+//             var ux = ( Math.cos(theta) * v ) * direction;
+//             var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
+//             nx = (ux * t);
+//             ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
+//             $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
+//             t = t + 1;
+//             if(t > totalt) {
+//                 $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
+//                 $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
+//                 clearInterval(z);
+//             }
+//         }, 50);
+//     });
+// }
 
 
