@@ -528,99 +528,57 @@ var controller = {
 
 var gameboard = null;
 
-    (genClips = function() {
-        gameboard = $('.clipped-box');
-        var amount = 5;
-        var width = gameboard.width() / amount;
-        var height = gameboard.height() / amount;
-        var y = 0;
+function rand(min, max) {
+    return Math.floor(Math.random() * (max - 1)) + min;
+}
 
-        for(var row = 0; row < amount; row++){
-            for(var col =0; col < amount; col++){
-                var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-                var piece = $("<div>",{
-                    'class': 'clipped',
-                    css:{
-                        clip: thisClip,
-                    }
-                });
-                piece.appendTo(gameboard);
-            }
-        }
-    })();
+function explodeElement(){
+    gameboard = $('.clipped-box');
+    var amount = 5;
+    var width = gameboard.width() / amount;
+    var height = gameboard.height() / amount;
 
-    function rand(min, max) {
-        return Math.floor(Math.random() * (max - 1)) + min;
-    }
-
-    var first = false;
-
-    function explodeElement(){
-
-            $('.clipped-box .content').css({'display' : 'none'});
-            $('.clipped-box div:not(.content)').each(function() {
-                var v = rand(120, 90),
-                    angle = rand(80, 89), // The angle (the angle of projection) is a random number between 80 and 89 degrees.
-                    theta = (angle * Math.PI) / 180, // Theta is the angle in radians
-                    g = -9.8; // And gravity is -9.8. If you live on another planet feel free to change
-
-                // $(this) as self
-                var self = $(this);
-
-                // time is initially zero, also set some random variables. It's higher than the total time for the projectile motion
-                // because we want the squares to go off screen.
-                var t = 0,
-                    z, r, nx, ny,
-                    totalt =  15;
-
-                // The direction can either be left (1), right (-1) or center (0). This is the horizontal direction.
-                var negate = [1, -1, 0],
-                    direction = negate[ Math.floor(Math.random() * negate.length) ];
-
-                // // Some random numbers for altering the shapes position
-                // var randDeg = rand(-5, 10),
-                //     randScale = rand(0.9, 1.1),
-                //     randDeg2 = rand(30, 5);
-
-                // Set an interval
-                z = setInterval(function() {
-
-                    // Horizontal speed is constant (no wind resistance on the internet)
-                    var ux = ( Math.cos(theta) * v ) * direction;
-
-                    // Vertical speed decreases as time increases before reaching 0 at its peak
-                    var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
-
-                    // The horizontal position
-                    nx = (ux * t);
-
-                    // s = ut + 0.5at^2
-                    ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
-
-                    // Apply the positions
-                    $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
-
-                    // Increase the time by 0.10
-                    t = t + 1;
-
-                    // If the time is greater than the total time clear the interval
-                    if(t > totalt) {
-
-                        clicked = false;
-                        first = true;
-
-
-                        $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
-                        $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
-
-
-                        // Finally clear the interval
-                        clearInterval(z);
-
-                    }
-
-                }, 1); // Run this interval every 10ms. Changing this will change the pace of the animation
-
+    for(var row = 0; row < amount; row++){
+        for(var col =0; col < amount; col++){
+            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+            var piece = $("<div>",{
+                'class': 'clipped',
+                css:{
+                    clip: thisClip,
+                }
             });
-
+            piece.appendTo(gameboard);
+        }
     }
+
+    $('.clipped-box .content').css({'display' : 'none'});
+    $('.clipped-box div:not(.content)').each(function() {
+        var v = rand(120, 90),
+            angle = rand(80, 89),
+            theta = (angle * Math.PI) / 180,
+            g = -9.8;
+
+        var self = $(this);
+
+        var t = 0,
+            z, nx, ny,
+            totalt =  15;
+
+        var negate = [1, -1, 0];
+        var direction = negate[ Math.floor(Math.random() * negate.length) ];
+
+        z = setInterval(function() {
+            var ux = ( Math.cos(theta) * v ) * direction;
+            var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
+            nx = (ux * t);
+            ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
+            $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
+            t = t + 1;
+            if(t > totalt) {
+                $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
+                $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
+                clearInterval(z);
+            }
+        }, 1);
+    });
+}
