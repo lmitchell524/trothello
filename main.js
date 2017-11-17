@@ -16,7 +16,7 @@ var model = {
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
-    aiTurn: false,
+    turnInProgress: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
     CreateGridCell: function(y, x){
@@ -282,23 +282,59 @@ var model = {
         this.player2ChipCount = null;
     },
     getAiSpot: function(){
-        var highestPriorityIndex = 0;
+        var cSpot = [];
+        var xSpot = [];
         for (var i=0; i<model.currentAvailableSpots.length; i++){
-            var position = model.currentAvailableSpots[i].location.attr('position').split('-');
-            var y = parseInt(position[0]);
-            var x = parseInt(position[1]);
-            console.log(y, x);
+            var position = model.currentAvailableSpots[i].location.attr('position');
 
-            if (x === 0 || y === 0){
-                if (x === 7 || y === 7){
-                    return this.currentAvailableSpots[i]
-                }
-                highestPriorityIndex = i;
-            } else if (y === 0 || y === 7){
-                highestPriorityIndex = i;
+            switch (position){
+                case '0-0':
+                case '0-7':
+                case '7-0':
+                case '7-7':
+                    return this.currentAvailableSpots[i];
+                case '0-1':
+                case '1-0':
+                case '1-1':
+                    if (model.grid[0][0].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    cSpot.push(this.currentAvailableSpots[i]);
+                    this.currentAvailableSpots.splice(i, 1);
+                    i--;
+                    break;
+                case '0-6':
+                case '1-7':
+                case '1-6':
+                    if (model.grid[0][7].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    cSpot.push(this.currentAvailableSpots[i]);
+                    this.currentAvailableSpots.splice(i, 1);
+                    i--;
+                    break;
+                case '6-0':
+                case '7-1':
+                case '6-1':
+                    if (model.grid[7][0].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    cSpot.push(this.currentAvailableSpots[i]);
+                    this.currentAvailableSpots.splice(i, 1);
+                    i--;
+                    break;
+                case '7-6':
+                case '6-7':
+                case '6-6':
+                    if (model.grid[7][7].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    i--;
+                    cSpot.push(this.currentAvailableSpots[i]);
+                    this.currentAvailableSpots.splice(i, 1);
             }
         }
-        return this.currentAvailableSpots[highestPriorityIndex];
+        return this.currentAvailableSpots[0];
     }
 };
 
@@ -451,7 +487,8 @@ var controller = {
         return available;
     },
     addChipToGame: function() {
-        if (!model.aiTurn) {
+        if (!model.turnInProgress) {
+            model.turnInProgress = true;
             var targetCell = $(this);
             var targetPosition;
             var y;
@@ -504,13 +541,14 @@ var controller = {
             }
             console.log("chips to explode: " , cellsToExplode);
             prepareExploders(cellsToExplode, 'sequential', afterMove);
+            model.turnInProgress = false;
         }
     },
     aiMove: function(){
         var targetSpot = model.getAiSpot();
-        model.aiTurn = true;
+        model.turnInProgress = true;
         setTimeout(function() {
-            model.aiTurn = false;
+            model.turnInProgress = false;
             if (targetSpot) {
                targetSpot.location.click();
             }
