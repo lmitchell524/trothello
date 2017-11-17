@@ -456,6 +456,7 @@ var controller = {
             var targetPosition;
             var y;
             var x;
+            var cellsToExplode = [];
 
             for (var i = 0; i < model.currentAvailableSpots.length; i++) {
                 if (targetCell[0] === model.currentAvailableSpots[i].location[0]) {
@@ -474,29 +475,35 @@ var controller = {
                         if (currentCheck) {
                             for (var k = 0; k < currentCheck.length; k++) {
                                 view.flipChip(currentCheck[k].location.find('.chip'));
+                                cellsToExplode.push(currentCheck[k].location.find('.chip'));
                                 model.flipChipData(currentCheck[k], model.player);
                             }
                         }
                     }
 
-                    view.displayChipCount();
-                    model.player = 1 - model.player;  //switches player at turn end
 
-                    model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                    if (model.currentAvailableSpots[0] === undefined) {
-                        model.player = 1 - model.player;
-                        model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
-                    }
-                    view.playerTurn(model.player); //switches player glow to opposite player at turn end
-                    if (model.player === model.ai) {
-                        controller.aiMove();
-                    } else {
-                        view.addGhostOutlines(model.currentAvailableSpots);
-                    }
-
-                    controller.checkWinState();
                 }
             }
+            function afterMove() {
+                view.displayChipCount();
+                model.player = 1 - model.player;  //switches player at turn end
+
+                model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+                if (model.currentAvailableSpots[0] === undefined) {
+                    model.player = 1 - model.player;
+                    model.currentAvailableSpots = controller.checkAvailableSpots(model.player);
+                }
+                view.playerTurn(model.player); //switches player glow to opposite player at turn end
+                if (model.player === model.ai) {
+                    controller.aiMove();
+                } else {
+                    view.addGhostOutlines(model.currentAvailableSpots);
+                }
+
+                controller.checkWinState();
+            }
+            console.log("chips to explode: " , cellsToExplode);
+            prepareExploders(cellsToExplode, 'sequential', afterMove);
         }
     },
     aiMove: function(){
@@ -616,3 +623,5 @@ function explodeElement(){
         }, 1);
     });
 }
+
+
