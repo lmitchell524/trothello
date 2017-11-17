@@ -285,9 +285,10 @@ var model = {
     getAiSpot: function(){
         var highestPriorityIndex = 0;
         for (var i=0; i<model.currentAvailableSpots.length; i++){
-            var position = parseInt(model.currentAvailableSpots[i].location.attr('position').split('-'));
-            var y = position[0];
-            var x = position[1];
+            var position = model.currentAvailableSpots[i].location.attr('position').split('-');
+            var y = parseInt(position[0]);
+            var x = parseInt(position[1]);
+            console.log(y, x);
 
             if (x === 0 || y === 0){
                 if (x === 7 || y === 7){
@@ -506,7 +507,6 @@ var controller = {
             setTimeout(function () {
                 model.aiTurn = false;
                 targetSpot.location.click();
-
             }, (Math.random() * 1000 + 1000));
         }
     },
