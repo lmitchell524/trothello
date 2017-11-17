@@ -636,6 +636,6 @@ function explodeElement(){
                 $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
                 clearInterval(z);
             }
-        }, 1);
+        }, 50);
     });
 }

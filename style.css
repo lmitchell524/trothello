@@ -19,6 +19,7 @@ body {
     width: 100vw;
     font-family: 'Tron', sans-serif;
     color: #fff;
+    overflow: hidden;
 }
 
 main {
@@ -256,7 +257,7 @@ h2 {
     border-radius: 5px;
     outline: none;
     position: absolute;
-    top: 88vh;
+    top: 90vh;
     transform: translate(-50%, -50%);
     border: none;
     font-family: 'Rationale', sans-serif;
@@ -287,7 +288,7 @@ h2 {
     width: 100vw;
     height: 100vh;
     color: white;
-    background-image: url("images/winnerModalbg.jpg");
+    background-image: url("images/winModalBG.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -299,16 +300,14 @@ h2 {
     margin-top: 4vw;
     font-size: 6vw;
     text-align: center;
-    /*margin-bottom: 0;*/
 }
 
 .playAgain {
-    font-family:'Tron', sans-serif;
-    font-size: 3.5vw;
+    font-family: 'Rationale', sans-serif;
+    font-size: 4.5vw;
     text-align: center;
-    /*margin-top: 30%;*/
     position: absolute;
-    top: 25vh;
+    top: 30vh;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -320,6 +319,7 @@ h2 {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border: 2px solid white;
 }
 
 .playerBox1Win:hover{
@@ -337,6 +337,7 @@ h2 {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border: 2px solid white;
 }
 
 .playerBox2Win:hover {
@@ -346,8 +347,6 @@ h2 {
 .playerBox2WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
 }
-
-/*  EXPLOSION CODE  */
 
 .cell {
     -webkit-transition: top 1.2s linear;
@@ -359,16 +358,13 @@ h2 {
     text-align: center;
     -moz-box-sizing: border-box;
     z-index:-1;
-}
-
-.cell, .cell div {
-    position: relative;
-}
-
-.cell div {
     position: absolute;
     top: auto;
     left: 0;
     -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
     transition: transform 1.4s ease-in, background 0.3s ease-in;
+}
+
+.cell, .cell div {
+    position: relative;
 }
