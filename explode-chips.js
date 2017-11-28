@@ -20,7 +20,6 @@ function prepareExploders(allDiscs, immediatelyExplode=false, finishedCallback=f
                 piece.appendTo(disc);
             }
         }
-        debugger;
         if(immediatelyExplode==='instant'){
             explodeElement(disc);
         } else {

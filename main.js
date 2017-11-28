@@ -16,6 +16,7 @@ var model = {
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
+    humanTurn: false,
     aiTurn: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
@@ -281,24 +282,64 @@ var model = {
         this.player1ChipCount = null;
         this.player2ChipCount = null;
     },
-    getAiSpot: function(){   //***************************************************//
-        var highestPriorityIndex = 0;
-        for (var i=0; i<model.currentAvailableSpots.length; i++){
-            var position = model.currentAvailableSpots[i].location.attr('position').split('-');
-            var y = parseInt(position[0]);
-            var x = parseInt(position[1]);
-            console.log(y, x);
 
-            if (x === 0 || y === 0){
-                if (x === 7 || y === 7){
-                    return this.currentAvailableSpots[i]
-                }
-                highestPriorityIndex = i;
-            } else if (y === 0 || y === 7){
-                highestPriorityIndex = i;
+    getAiSpot: function(){
+        var highestPriorityIndex = 0;
+
+        var badSpots = [];
+        var goodSpots = [];
+
+        for (var i=0; i<model.currentAvailableSpots.length; i++){
+            var position = model.currentAvailableSpots[i].location.attr('position');
+
+            switch (position){
+                case '0-0':
+                case '0-7':
+                case '7-0':
+                case '7-7':
+                    return this.currentAvailableSpots[i];
+                case '0-1':
+                case '1-0':
+                case '1-1':
+                    if (model.grid[0][0].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    badSpots.push(this.currentAvailableSpots[i]);
+                    break;
+                case '0-6':
+                case '1-7':
+                case '1-6':
+                    if (model.grid[0][7].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    badSpots.push(this.currentAvailableSpots[i]);
+                    break;
+                case '6-0':
+                case '7-1':
+                case '6-1':
+                    if (model.grid[7][0].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    badSpots.push(this.currentAvailableSpots[i]);
+                    break;
+                case '7-6':
+                case '6-7':
+                case '6-6':
+                    if (model.grid[7][7].player === model.ai){
+                        return this.currentAvailableSpots[i]
+                    }
+                    badSpots.push(this.currentAvailableSpots[i]);
+                    break;
+                default:
+                    goodSpots.push(this.currentAvailableSpots[i]);
             }
         }
-        return this.currentAvailableSpots[highestPriorityIndex];
+        if (goodSpots[0]){
+            return goodSpots[Math.floor(Math.random()*goodSpots.length)];
+        } else {
+            return badSpots[Math.floor(Math.random()*badSpots.length)];
+        }
+
     }
 };
 
@@ -451,7 +492,8 @@ var controller = {
         return available;
     },
     addChipToGame: function() {
-        if (!model.aiTurn) {
+        if (!model.humanTurn && !model.aiTurn) {
+            model.humanTurn = true;
             var targetCell = $(this);
             var targetPosition;
             var y;
@@ -480,8 +522,7 @@ var controller = {
                             }
                         }
                     }
-
-
+                    prepareExploders(cellsToExplode, 'sequential', afterMove);
                 }
             }
             function afterMove() {
@@ -502,19 +543,20 @@ var controller = {
 
                 controller.checkWinState();
             }
-            console.log("chips to explode: " , cellsToExplode);
-            prepareExploders(cellsToExplode, 'sequential', afterMove);
+            setTimeout(function(){
+                model.humanTurn = false;
+            }, 500)
         }
     },
     aiMove: function(){
-        var targetSpot = model.getAiSpot();
         model.aiTurn = true;
-        if (targetSpot) {
-            setTimeout(function () {
-                model.aiTurn = false;
-                targetSpot.location.click();
-            }, (Math.random() * 1000 + 1000));
-        }
+        var targetSpot = model.getAiSpot();
+        setTimeout(function() {
+            model.aiTurn = false;
+            if (targetSpot) {
+               targetSpot.location.click();
+            }
+        }, (Math.random() * 1000 + 1000));
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
@@ -564,7 +606,9 @@ var controller = {
     }
 };
 
+
 // Gameboard Explosion Code //
+
 
 // var gameboard = null;
 //
