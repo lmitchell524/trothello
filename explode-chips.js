@@ -1,7 +1,7 @@
 function prepareExploders(allDiscs, immediatelyExplode=false, finishedCallback=function(){}){
     allDiscs = $(allDiscs);
     allDiscs.each(function() {
-        var amount = 10 - allDiscs.length;
+        var amount = 8 - allDiscs.length;
         var disc = $(this);
         var width = disc.width() / amount;
         var height = disc.height() / amount;

@@ -19,9 +19,9 @@ var model = {
     aiTurn: false,
     get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
 
-    CreateGridCell: function(y, x){
+    CreateGridCell: function(y, x){             //
         this.occupied = false;
-        this.location = $('.row:eq('+y+') .cell:eq('+x+')');
+        this.location = $('.row:eq('+y+') .cell:eq('+x+')');        //:eq selects an element w/ specific index number starting at 0 - like :nth child but starts at 0, not 1
         this.player = null;
         this.clickable = false;
     },
@@ -29,7 +29,7 @@ var model = {
         for (var y=0; y<8; y++){
             var row = [];
             for (var x=0; x<8; x++){
-                var cell = new this.CreateGridCell(y, x);
+                var cell = new this.CreateGridCell(y, x); //give coordinate location of each new cell created as the loop runs, then pushes to row every time outer loop runs.
                 row.push(cell)
             }
             this.grid.push(row);
@@ -74,7 +74,7 @@ var model = {
         }
     },
     checkSurroundingChips: function(y, x, player){          //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
-        var otherPlayer = 1 - player;
+        var otherPlayer = 1 - player;                       //also checks position on board. Won't go into cells outside the board if y or x is less than 0 or greater than 7.
 
         if (y-1>=0 && x-1>=0) {
             if (this.grid[y - 1][x - 1].player === otherPlayer) {
@@ -134,8 +134,8 @@ var model = {
         }
         return false;
     },
-    checkUpLeft: function(y, x, player){
-        var outputArray = [];
+    checkUpLeft: function(y, x, player){ //following 8 functions check direction of chips for opponent chip by first seeing if their own chip occupies space.
+        var outputArray = [];            //Then checks if space is empty. Then checks for opponent chip. If found, push to an array and output array after you loop back to if and find current players chip (i.e. their own)
 
         for (var i=1; y-i>=0 && x-i>=0; i++){
             if (model.grid[y-i][x-i].player === player){
@@ -247,7 +247,7 @@ var model = {
         return false;
     },
     flipChipData: function(cellObject, player){
-        cellObject.player = 1 - cellObject.player;
+        cellObject.player = 1 - cellObject.player; //switch players and then add chip count
         if (player === 0){
             this.player1ChipCount++;
             this.player2ChipCount--;
@@ -281,7 +281,7 @@ var model = {
         this.player1ChipCount = null;
         this.player2ChipCount = null;
     },
-    getAiSpot: function(){
+    getAiSpot: function(){   //***************************************************//
         var highestPriorityIndex = 0;
         for (var i=0; i<model.currentAvailableSpots.length; i++){
             var position = model.currentAvailableSpots[i].location.attr('position').split('-');
@@ -310,7 +310,7 @@ var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
         $('.singleButton').on('click', function(){
-            controller.gameStart(1-model.player);
+            controller.gameStart(1-model.player); //opposite of what player choose and set it to ai b/c we play in ai as the parameter
         });
         $('.multiButton').on('click', function(){
             controller.gameStart(null);
@@ -335,7 +335,7 @@ var view = {
             }
             $('#gameboard').append(row);
         }
-        $('#gameboard').css('top', '50%');
+        // $('#gameboard').css('top', '50%'); //needed only if game board explodes
     },
 
     addChipToBoard: function(targetCell, player){
@@ -564,86 +564,86 @@ var controller = {
     }
 };
 
-// EXPLOSION CODE
+// Gameboard Explosion Code //
 
-var gameboard = null;
-
-(genClips = function() {
-    gameboard = $('.clipped-box');
-    var amount = 5;
-    var width = gameboard.width() / amount;
-    var height = gameboard.height() / amount;
-    var y = 0;
-
-    for(var row = 0; row < amount; row++){
-        for(var col =0; col < amount; col++){
-            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-            var piece = $("<div>",{
-                'class': 'clipped',
-                css:{
-                    clip: thisClip,
-                }
-            });
-            piece.appendTo(gameboard);
-        }
-    }
-})();
-
-function rand(min, max) {
-    return Math.floor(Math.random() * (max - 1)) + min;
-}
-
-var first = false;
-
-function explodeElement(){
-    gameboard = $('.clipped-box');
-    var amount = 5;
-    var width = gameboard.width() / amount;
-    var height = gameboard.height() / amount;
-
-    for(var row = 0; row < amount; row++){
-        for(var col =0; col < amount; col++){
-            var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-            var piece = $("<div>",{
-                'class': 'clipped',
-                css:{
-                    clip: thisClip,
-                }
-            });
-            piece.appendTo(gameboard);
-        }
-    }
-
-    $('.clipped-box .content').css({'display' : 'none'});
-    $('.clipped-box div:not(.content)').each(function() {
-        var v = rand(120, 90),
-            angle = rand(80, 89),
-            theta = (angle * Math.PI) / 180,
-            g = -9.8;
-
-        var self = $(this);
-
-        var t = 0,
-            z, nx, ny,
-            totalt =  15;
-
-        var negate = [1, -1, 0];
-        var direction = negate[ Math.floor(Math.random() * negate.length) ];
-
-        z = setInterval(function() {
-            var ux = ( Math.cos(theta) * v ) * direction;
-            var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
-            nx = (ux * t);
-            ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
-            $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
-            t = t + 1;
-            if(t > totalt) {
-                $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
-                $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
-                clearInterval(z);
-            }
-        }, 50);
-    });
-}
+// var gameboard = null;
+//
+// (genClips = function() {
+//     gameboard = $('.clipped-box');
+//     var amount = 5;
+//     var width = gameboard.width() / amount;
+//     var height = gameboard.height() / amount;
+//     var y = 0;
+//
+//     for(var row = 0; row < amount; row++){
+//         for(var col =0; col < amount; col++){
+//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+//             var piece = $("<div>",{
+//                 'class': 'clipped',
+//                 css:{
+//                     clip: thisClip,
+//                 }
+//             });
+//             piece.appendTo(gameboard);
+//         }
+//     }
+// })();
+//
+// function rand(min, max) {
+//     return Math.floor(Math.random() * (max - 1)) + min;
+// }
+//
+// var first = false;
+//
+// function explodeElement(){
+//     gameboard = $('.clipped-box');
+//     var amount = 5;
+//     var width = gameboard.width() / amount;
+//     var height = gameboard.height() / amount;
+//
+//     for(var row = 0; row < amount; row++){
+//         for(var col =0; col < amount; col++){
+//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
+//             var piece = $("<div>",{
+//                 'class': 'clipped',
+//                 css:{
+//                     clip: thisClip,
+//                 }
+//             });
+//             piece.appendTo(gameboard);
+//         }
+//     }
+//
+//     $('.clipped-box .content').css({'display' : 'none'});
+//     $('.clipped-box div:not(.content)').each(function() {
+//         var v = rand(120, 90),
+//             angle = rand(80, 89),
+//             theta = (angle * Math.PI) / 180,
+//             g = -9.8;
+//
+//         var self = $(this);
+//
+//         var t = 0,
+//             z, nx, ny,
+//             totalt =  15;
+//
+//         var negate = [1, -1, 0];
+//         var direction = negate[ Math.floor(Math.random() * negate.length) ];
+//
+//         z = setInterval(function() {
+//             var ux = ( Math.cos(theta) * v ) * direction;
+//             var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
+//             nx = (ux * t);
+//             ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
+//             $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
+//             t = t + 1;
+//             if(t > totalt) {
+//                 $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
+//                 $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
+//                 clearInterval(z);
+//             }
+//         }, 50);
+//     });
+// }
 
 
