@@ -77,11 +77,11 @@ var model = {
         var otherPlayer = 1 - player;                       //also checks position on board. Won't go into cells outside the board if y or x is less than 0 or greater than 7.
 
         for (let i=0; i<9; i++){
-            let ydir = this.directionMap[i][0];
-            let xdir = this.directionMap[i][1];
+            let ydir = y + this.directionMap[i][0];
+            let xdir = x + this.directionMap[i][1];
 
-            if (y + ydir >= 0 && x + xdir >= 0) {
-                if (this.grid[y + ydir][x + xdir].player === otherPlayer) {
+            if (ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8) {
+                if (this.grid[ydir][xdir].player === otherPlayer) {
                     if (this.checkDir(y, x, player, this.directionMap[i])) {
                         return true;
                     };
@@ -93,14 +93,16 @@ var model = {
     checkDir: function(y, x, player, dir){ //following 8 functions check direction of chips for opponent chip by first seeing if their own chip occupies space.
         var outputArray = [];              //Then checks if space is empty. Then checks for opponent chip. If found, push to an array and output array after you loop back to if and find current players chip (i.e. their own)
 
-        for (var i=1; (y + dir[0]*i >= 0 && y + dir[0]*i < 8) && (x + dir[1]*i >= 0 && x + dir[1]*i < 8); i++){
+        for (let i=1, ydir = y + dir[0],  xdir = x + dir[1]; 
+            ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8; 
+            i++, ydir += dir[0], xdir += dir[1]){
 
-            if (model.grid[y + dir[0]*i][x + dir[1]*i].player === player){
+            if (model.grid[ydir][xdir].player === player){
                 return outputArray;
-            } else if (model.grid[y + dir[0]*i][x + dir[1]*i].occupied === false){
+            } else if (model.grid[ydir][xdir].occupied === false){
                 return false;
-            } else if (model.grid[y + dir[0]*i][x + dir[1]*i].player !== player){
-                outputArray.push(model.grid[y + dir[0]*i][x + dir[1]*i]);
+            } else if (model.grid[ydir][xdir].player !== player){
+                outputArray.push(model.grid[ydir][xdir]);
             }
         }
         return false;
