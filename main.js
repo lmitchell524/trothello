@@ -13,13 +13,12 @@ var model = {
     player: 0,
     ai: null,
     currentAvailableSpots: null,
+    directionMap: [[-1, -1],[-1, 0],[-1, 1],[0, -1],[0, 0],[0, 1],[1, -1],[1, 0],[1, 1]],
     chipCount: null,
     player1ChipCount: null,
     player2ChipCount: null,
     humanTurn: false,
     aiTurn: false,
-    get directionCheckFunctions() {return [this.checkUpLeft, this.checkUp, this.checkUpRight, this.checkRight, this.checkDownRight, this.checkDown, this.checkDownLeft, this.checkLeft]},
-
     CreateGridCell: function(y, x){             //
         this.occupied = false;
         this.location = $('.row:eq('+y+') .cell:eq('+x+')');        //:eq selects an element w/ specific index number starting at 0 - like :nth child but starts at 0, not 1
@@ -77,172 +76,33 @@ var model = {
     checkSurroundingChips: function(y, x, player){          //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
         var otherPlayer = 1 - player;                       //also checks position on board. Won't go into cells outside the board if y or x is less than 0 or greater than 7.
 
-        if (y-1>=0 && x-1>=0) {
-            if (this.grid[y - 1][x - 1].player === otherPlayer) {
-                if (this.checkUpLeft(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (y-1>=0) {
-            if (this.grid[y - 1][x].player === otherPlayer) {
-                if (this.checkUp(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (y-1>=0 && x+1<8) {
-            if (this.grid[y - 1][x + 1].player === otherPlayer) {
-                if (this.checkUpRight(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (x+1<8) {
-            if (this.grid[y][x + 1].player === otherPlayer) {
-                if (this.checkRight(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (y+1<8 && x+1<8) {
-            if (this.grid[y + 1][x + 1].player === otherPlayer) {
-                if (this.checkDownRight(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (y+1<8) {
-            if (this.grid[y + 1][x].player === otherPlayer) {
-                if (this.checkDown(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (y+1<8 && x-1>=0) {
-            if (this.grid[y + 1][x - 1].player === otherPlayer) {
-                if (this.checkDownLeft(y, x, player)) {
-                    return true;
-                };
-            }
-        }
-        if (x-1>=0) {
-            if (this.grid[y][x - 1].player === otherPlayer) {
-                if (this.checkLeft(y, x, player)) {
-                    return true;
-                };
+        for (let i=0; i<9; i++){
+            let ydir = y + this.directionMap[i][0];
+            let xdir = x + this.directionMap[i][1];
+
+            if (ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8) {
+                if (this.grid[ydir][xdir].player === otherPlayer) {
+                    if (this.checkDir(y, x, player, this.directionMap[i])) {
+                        return true;
+                    };
+                }
             }
         }
         return false;
     },
-    checkUpLeft: function(y, x, player){ //following 8 functions check direction of chips for opponent chip by first seeing if their own chip occupies space.
-        var outputArray = [];            //Then checks if space is empty. Then checks for opponent chip. If found, push to an array and output array after you loop back to if and find current players chip (i.e. their own)
+    checkDir: function(y, x, player, dir){ //following 8 functions check direction of chips for opponent chip by first seeing if their own chip occupies space.
+        var outputArray = [];              //Then checks if space is empty. Then checks for opponent chip. If found, push to an array and output array after you loop back to if and find current players chip (i.e. their own)
 
-        for (var i=1; y-i>=0 && x-i>=0; i++){
-            if (model.grid[y-i][x-i].player === player){
-                return outputArray;
-            } else if (model.grid[y-i][x-i].occupied === false){
-                return false;
-            } else if (model.grid[y-i][x-i].player !== player){
-                outputArray.push(model.grid[y-i][x-i]);
-            }
-        }
-        return false;
-    },
-    checkUp: function(y, x, player){
-        var outputArray = [];
+        for (let i=1, ydir = y + dir[0],  xdir = x + dir[1]; 
+            ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8; 
+            i++, ydir += dir[0], xdir += dir[1]){
 
-        for (var i=1; y-i>=0; i++){
-            if (model.grid[y-i][x].player === player){
+            if (model.grid[ydir][xdir].player === player){
                 return outputArray;
-            } else if (model.grid[y-i][x].occupied === false){
+            } else if (model.grid[ydir][xdir].occupied === false){
                 return false;
-            } else if (model.grid[y-i][x].player !== player){
-                outputArray.push(model.grid[y-i][x]);
-            }
-        }
-        return false;
-    },
-    checkUpRight: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; y-i>=0 && x+i<8; i++){
-            if (model.grid[y-i][x+i].player === player){
-                return outputArray;
-            } else if (model.grid[y-i][x+i].occupied === false){
-                return false;
-            } else if (model.grid[y-i][x+i].player !== player){
-                outputArray.push(model.grid[y-i][x+i]);
-            }
-        }
-        return false;
-    },
-    checkRight: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; x+i<8; i++){
-            if (model.grid[y][x+i].player === player){
-                return outputArray;
-            } else if (model.grid[y][x+i].occupied === false){
-                return false;
-            } else if (model.grid[y][x+i].player !== player){
-                outputArray.push(model.grid[y][x+i]);
-            }
-        }
-        return false;
-    },
-    checkDownRight: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; y+i<8 && x+i<8; i++){
-            if (model.grid[y+i][x+i].player === player){
-                return outputArray;
-            } else if (model.grid[y+i][x+i].occupied === false){
-                return false;
-            } else if (model.grid[y+i][x+i].player !== player){
-                outputArray.push(model.grid[y+i][x+i]);
-            }
-        }
-        return false;
-    },
-    checkDown: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; y+i<8; i++){
-            if (model.grid[y+i][x].player === player){
-                return outputArray;
-            } else if (model.grid[y+i][x].occupied === false){
-                return false;
-            } else if (model.grid[y+i][x].player !== player){
-                outputArray.push(model.grid[y+i][x]);
-            }
-        }
-        return false;
-    },
-    checkDownLeft: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; y+i<8 && x-i>=0; i++){
-            if (model.grid[y+i][x-i].player === player){
-                return outputArray;
-            } else if (model.grid[y+i][x-i].occupied === false){
-                return false;
-            } else if (model.grid[y+i][x-i].player !== player){
-                outputArray.push(model.grid[y+i][x-i]);
-            }
-        }
-        return false;
-    },
-    checkLeft: function(y, x, player){
-        var outputArray = [];
-
-        for (var i=1; x-i>=0; i++){
-            if (model.grid[y][x-i].player === player){
-                return outputArray;
-            } else if (model.grid[y][x-i].occupied === false){
-                return false;
-            } else if (model.grid[y][x-i].player !== player){
-                outputArray.push(model.grid[y][x-i]);
+            } else if (model.grid[ydir][xdir].player !== player){
+                outputArray.push(model.grid[ydir][xdir]);
             }
         }
         return false;
@@ -330,8 +190,8 @@ var model = {
                     }
                     badSpots.push(this.currentAvailableSpots[i]);
                     break;
-                default:
-                    goodSpots.push(this.currentAvailableSpots[i]);
+                default: 
+                goodSpots.push(this.currentAvailableSpots[i]);
             }
         }
         if (goodSpots[0]){
@@ -343,15 +203,15 @@ var model = {
     }
 };
 
-
-// ------------------------ VIEW -------------------------- //
-
+//////////////////////////////////////////////////////////////
+///////////////             VIEW           ///////////////////
+//////////////////////////////////////////////////////////////
 
 var view = {
     applyClickHandlers: function(){
         $('#gameboard').on('click', '.cell', controller.addChipToGame);
         $('.singleButton').on('click', function(){
-            controller.gameStart(1-model.player); //opposite of what player choose and set it to ai b/c we play in ai as the parameter
+            controller.gameStart(1-model.player); //opposite of what player chooses and set it to ai b/c we play in ai as the parameter
         });
         $('.multiButton').on('click', function(){
             controller.gameStart(null);
@@ -376,7 +236,6 @@ var view = {
             }
             $('#gameboard').append(row);
         }
-        // $('#gameboard').css('top', '50%'); //needed only if game board explodes
     },
 
     addChipToBoard: function(targetCell, player){
@@ -445,7 +304,9 @@ var view = {
 };
 
 
-// --------------------------- CONTROLLER ------------------------- //
+//////////////////////////////////////////////////////////////
+///////////////           CONTROLLER        //////////////////
+//////////////////////////////////////////////////////////////
 
 
 var controller = {
@@ -507,13 +368,12 @@ var controller = {
                     x = parseInt(targetPosition[1]);
 
                     view.removeGhostOutlines(model.currentAvailableSpots);
-
-
                     view.addChipToBoard(targetCell, model.player);
                     model.addChipData(y, x, model.player);
 
-                    for (var j = 0; j < model.directionCheckFunctions.length; j++) {
-                        var currentCheck = model.directionCheckFunctions[j](y, x, model.player);
+                    for (var j = 0; j < model.directionMap.length; j++) {
+                        var dir = model.directionMap[j];
+                        var currentCheck = model.checkDir(y, x, model.player, dir);
                         if (currentCheck) {
                             for (var k = 0; k < currentCheck.length; k++) {
                                 view.flipChip(currentCheck[k].location.find('.chip'));
@@ -605,89 +465,3 @@ var controller = {
         controller.playAgain(0);
     }
 };
-
-
-// Gameboard Explosion Code //
-
-
-// var gameboard = null;
-//
-// (genClips = function() {
-//     gameboard = $('.clipped-box');
-//     var amount = 5;
-//     var width = gameboard.width() / amount;
-//     var height = gameboard.height() / amount;
-//     var y = 0;
-//
-//     for(var row = 0; row < amount; row++){
-//         for(var col =0; col < amount; col++){
-//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-//             var piece = $("<div>",{
-//                 'class': 'clipped',
-//                 css:{
-//                     clip: thisClip,
-//                 }
-//             });
-//             piece.appendTo(gameboard);
-//         }
-//     }
-// })();
-//
-// function rand(min, max) {
-//     return Math.floor(Math.random() * (max - 1)) + min;
-// }
-//
-// var first = false;
-//
-// function explodeElement(){
-//     gameboard = $('.clipped-box');
-//     var amount = 5;
-//     var width = gameboard.width() / amount;
-//     var height = gameboard.height() / amount;
-//
-//     for(var row = 0; row < amount; row++){
-//         for(var col =0; col < amount; col++){
-//             var thisClip = `rect(${row*10}px, ${(col*width+width)}px, ${(row*height+height)}px, ${col*10}px)`;
-//             var piece = $("<div>",{
-//                 'class': 'clipped',
-//                 css:{
-//                     clip: thisClip,
-//                 }
-//             });
-//             piece.appendTo(gameboard);
-//         }
-//     }
-//
-//     $('.clipped-box .content').css({'display' : 'none'});
-//     $('.clipped-box div:not(.content)').each(function() {
-//         var v = rand(120, 90),
-//             angle = rand(80, 89),
-//             theta = (angle * Math.PI) / 180,
-//             g = -9.8;
-//
-//         var self = $(this);
-//
-//         var t = 0,
-//             z, nx, ny,
-//             totalt =  15;
-//
-//         var negate = [1, -1, 0];
-//         var direction = negate[ Math.floor(Math.random() * negate.length) ];
-//
-//         z = setInterval(function() {
-//             var ux = ( Math.cos(theta) * v ) * direction;
-//             var uy = ( Math.sin(theta) * v ) - ( (-g) * t);
-//             nx = (ux * t);
-//             ny = (uy * t) + (0.5 * (g) * Math.pow(t, 2));
-//             $(self).css({'bottom' : (ny)+'px', 'left' : (nx)+'px'});
-//             t = t + 1;
-//             if(t > totalt) {
-//                 $('.clipped-box').css({'top' : '-1000px', 'transition' : 'none'});
-//                 $(self).css({'left' : '0', 'bottom' : '0', 'opacity' : '1', 'transition' : 'none', 'transform' : 'none'});
-//                 clearInterval(z);
-//             }
-//         }, 50);
-//     });
-// }
-
-

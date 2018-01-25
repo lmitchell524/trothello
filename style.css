@@ -378,16 +378,141 @@ h2 {
     top: 0;
     left: 0;
 }
-@media screen and (max-width: 736px){
-    .directionsList {
-        padding-left: 10px;
+
+@media screen and (max-width: 768px){
+
+    /**********************************/
+    /******** intro modal *************/
+    /**********************************/
+    .introModalHeader {
+        font-size: 6vw;
+        top: 6%;
     }
 
-    .howToPlay {
-        font-size: 1.5em;
+    .multiButton, .singleButton {
+        top: 16vh;
+        font-size: 3.5vw;
+        width: 23%;
+    }
+
+    .directions {
+        width: 90vw;
+        top: 46%;
+        height: 50%;
+    }
+
+    .directionsList {
+        margin-top: 1px;
+        padding-left: 0;
+    }
+
+    .directionsList > li {
+        font-size: 2.5vh;
+    }
+
+    .playerBox {
+        width: 30%;
+        height: 20%;
+    }
+
+    .playerBox2 {
+        top: 83%;
+        left: 70%;
+    }
+
+    .playerBox1 {
+        top: 83%;
+        left: 30%;
     }
 
     .playerName {
-        top: 95%;
+        top: 90%;
+        font-size: 5vw;
     }
+
+
+    /**********************************/
+    /******** Game Board  *************/
+    /**********************************/
+    main {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+
+    #gameboard {
+        width: 85vw;
+        height: 85vw;
+    }
+
+    .cell {
+        font-size: 4.5vw;
+    }
+
+    aside {
+        width: 60%;
+        top: 0;
+        position: relative;
+        margin: auto;
+        background-color: black;
+    }
+
+    .discs {
+        margin: 0;
+        font-size: 5vmin;
+    }
+
+    .leftAside {
+        top: 11%;
+        left: 0%;
+    }
+
+    .rightAside {
+        top: 75%;
+        right: 0%;
+    }
+
+    .playerStats {
+        padding: 5%;
+    }
+
+    .playerStats .blue, .playerStats .orange {
+        display: inline-block;
+        font-size: 5vmin;
+        float: left;
+        margin-top: 3%;
+    }
+
+    .playerStats div {
+        display: inline-block;
+        margin-top: 2%;
+        margin-left: 15%;
+    }
+
+    .counter1, .counter2 {
+        font-size: 6vmin;
+        margin: 0;
+    }
+
+
+
+/**********************************/
+/******** win modal *************/
+/**********************************/
+
+    .winnerModalHeader {
+        margin-top: 15vw;
+        font-size: 11vw;
+    }
+
+    .playAgain {
+        background-color: #ffffff52;
+        border: 2px solid white;
+        border-radius: 5px;
+        text-shadow: 2px 2px black;
+    }
+
+
+
+
 }
