@@ -378,6 +378,72 @@ h2 {
     top: 0;
     left: 0;
 }
+
+@media screen and (max-width: 414px){
+    main {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+
+    #gameboard {
+        width: 85vw;
+        height: 85vw;
+    }
+
+    .cell {
+        font-size: 4.5vw;
+    }
+
+    aside {
+        width: 60%;
+        top: 0;
+        position: relative;
+        margin: auto;
+        background-color: black;
+    }
+
+    .discs {
+        margin: 0;
+        font-size: 5vmin;
+    }
+
+    .leftAside {
+        top: 11%;
+        left: 0%;
+    }
+
+    .rightAside {
+        top: 75%;
+        right: 0%;
+    }
+
+    .playerStats {
+        padding: 5%;
+    }
+
+    .playerStats .blue, .playerStats .orange {
+        display: inline-block;
+        font-size: 5vmin;
+        float: left;
+        margin-top: 3%;
+    }
+
+    .playerStats div {
+        display: inline-block;
+        margin-top: 2%;
+        margin-left: 15%;
+    }
+
+    .counter1, .counter2 {
+        font-size: 6vmin;
+        margin: 0;
+    }
+
+
+
+}
+
 @media screen and (max-width: 736px){
     .directionsList {
         padding-left: 10px;
