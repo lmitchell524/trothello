@@ -390,14 +390,14 @@ h2 {
     }
 
     .multiButton, .singleButton {
-        top: 16vh;
+        top: 92vh;
         font-size: 3.5vw;
         width: 23%;
     }
 
     .directions {
         width: 90vw;
-        top: 46%;
+        top: 61%;
         height: 50%;
     }
 
@@ -412,16 +412,15 @@ h2 {
 
     .playerBox {
         width: 30%;
-        height: 20%;
+        height: 15%;
+        top: 21%;
     }
 
     .playerBox2 {
-        top: 83%;
         left: 70%;
     }
 
     .playerBox1 {
-        top: 83%;
         left: 30%;
     }
 
