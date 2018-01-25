@@ -130,14 +130,25 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #2dcde5, 0 0 70px #2dcde5, 0 0 80px #2dcde5, 0 0 100px #2dcde5, 0 0 150px #2dcde5;
 }
 
+.chip.blue {
+    transform: rotateY(0deg);
+}
+
 .orange {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
+
+.chip.orange {
+    transform: rotateY(180deg);
+}
+
 
 .counter1, .counter2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
 }
+
+
 
 /* ------------------ intro modal ----------------------*/
 
@@ -361,8 +372,12 @@ h2 {
     position: absolute;
     top: auto;
     left: 0;
-    -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
-    transition: transform 1.4s ease-in, background 0.3s ease-in;
+    -webkit-transition: -webkit-transform 0.5s linear;
+    transition: transform 0.5s linear;
+}
+
+.rotateY90 {
+    transform: rotateY(90deg) !important;
 }
 
 .cell, .cell div {
@@ -390,14 +405,14 @@ h2 {
     }
 
     .multiButton, .singleButton {
-        top: 16vh;
+        top: 92vh;
         font-size: 3.5vw;
         width: 23%;
     }
 
     .directions {
         width: 90vw;
-        top: 46%;
+        top: 61%;
         height: 50%;
     }
 
@@ -412,16 +427,15 @@ h2 {
 
     .playerBox {
         width: 30%;
-        height: 20%;
+        height: 15%;
+        top: 21%;
     }
 
     .playerBox2 {
-        top: 83%;
         left: 70%;
     }
 
     .playerBox1 {
-        top: 83%;
         left: 30%;
     }
 
@@ -511,8 +525,5 @@ h2 {
         border-radius: 5px;
         text-shadow: 2px 2px black;
     }
-
-
-
 
 }
