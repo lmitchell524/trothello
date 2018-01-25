@@ -19,7 +19,7 @@ var model = {
     player2ChipCount: null,
     humanTurn: false,
     aiTurn: false,
-    CreateGridCell: function(y, x){             //
+    CreateGridCell: function(y, x){
         this.occupied = false;
         this.location = $('.row:eq('+y+') .cell:eq('+x+')');        //:eq selects an element w/ specific index number starting at 0 - like :nth child but starts at 0, not 1
         this.player = null;
@@ -93,8 +93,8 @@ var model = {
     checkDir: function(y, x, player, dir){ //following 8 functions check direction of chips for opponent chip by first seeing if their own chip occupies space.
         var outputArray = [];              //Then checks if space is empty. Then checks for opponent chip. If found, push to an array and output array after you loop back to if and find current players chip (i.e. their own)
 
-        for (let i=1, ydir = y + dir[0],  xdir = x + dir[1]; 
-            ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8; 
+        for (let i=1, ydir = y + dir[0],  xdir = x + dir[1];
+            ydir >= 0 && ydir < 8 && xdir >= 0 && xdir < 8;
             i++, ydir += dir[0], xdir += dir[1]){
 
             if (model.grid[ydir][xdir].player === player){
@@ -190,7 +190,7 @@ var model = {
                     }
                     badSpots.push(this.currentAvailableSpots[i]);
                     break;
-                default: 
+                default:
                 goodSpots.push(this.currentAvailableSpots[i]);
             }
         }
@@ -247,7 +247,11 @@ var view = {
     },
 
     flipChip: function(domElement){
-        domElement.toggleClass('orange blue');
+        domElement.addClass('rotateY90');
+        setTimeout(()=>{
+            domElement.toggleClass('orange blue');
+            domElement.removeClass('rotateY90');
+        }, 500)
     },
 
     playerTurn: function(player) {                  //adds glow class to player stats to show player turn, removes glow from opponent
@@ -377,12 +381,13 @@ var controller = {
                         if (currentCheck) {
                             for (var k = 0; k < currentCheck.length; k++) {
                                 view.flipChip(currentCheck[k].location.find('.chip'));
-                                cellsToExplode.push(currentCheck[k].location.find('.chip'));
+                                // cellsToExplode.push(currentCheck[k].location.find('.chip'));
                                 model.flipChipData(currentCheck[k], model.player);
                             }
                         }
                     }
-                    prepareExploders(cellsToExplode, 'sequential', afterMove);
+                    afterMove();
+                    // prepareExploders(cellsToExplode, 'sequential', afterMove);
                 }
             }
             function afterMove() {
@@ -416,7 +421,7 @@ var controller = {
             if (targetSpot) {
                targetSpot.location.click();
             }
-        }, (Math.random() * 1000 + 1000));
+        }, (Math.random() * 1000 + 2000));
     },
     checkWinState: function(){
         var winState = model.checkWinStats();
