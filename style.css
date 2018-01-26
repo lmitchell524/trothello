@@ -251,7 +251,7 @@ h2 {
 
 .directionsList > li {
     font-size: 3vh;
-    padding-bottom: 4%;
+    padding-bottom: 3%;
     list-style: none;
 }
 
@@ -261,9 +261,7 @@ h2 {
 }
 
 .multiButton, .singleButton {
-    /* background-color: white; */
     width: 20%;
-    /* height: 6%; */
     border-radius: 5px;
     outline: none;
     position: absolute;
@@ -458,12 +456,12 @@ h2 {
     #gameboard {
         width: 85vw;
         height: 85vw;
-        max-width: 60vmin;
-        max-height: 60vmin;
+        /* max-width: 60vmin;
+        max-height: 60vmin; */
     }
 
     .cell {
-        font-size: 3.5vmin;
+        font-size: 4.5vmin;
     }
 
     aside {
@@ -480,7 +478,7 @@ h2 {
     }
 
     .leftAside {
-        top: 11%;
+        top: 15%;
         left: 0%;
     }
 
@@ -531,5 +529,23 @@ h2 {
         top: 80%;
     }
 
+}
 
+@media screen and (min-width: 485px) and (max-width: 768px){
+    .rightAside {
+        top: 74%;
+    }
+
+    .leftAside {
+        top: 12%;
+    }
+
+    #gameboard {
+        max-width: 60vmin;
+        max-height: 60vmin;
+    }
+
+    .cell {
+        font-size: 3.5vmin;
+    }
 }
