@@ -48,29 +48,16 @@ var model = {
         }
     },
     addSurroundingClick: function(y, x){                //checks all 8 cells surrounding current cell and changes them to clickable
-        if (y-1>=0 && x-1>=0) {
-            this.grid[y - 1][x - 1].clickable = true;
-        }
-        if (y-1>=0) {
-            this.grid[y - 1][x].clickable = true;
-        }
-        if (y-1>=0 && x+1<8) {
-            this.grid[y - 1][x + 1].clickable = true;
-        }
-        if (x-1>=0) {
-            this.grid[y][x - 1].clickable = true;
-        }
-        if (x+1<8) {
-            this.grid[y][x + 1].clickable = true;
-        }
-        if (y+1<8 && x-1>=0) {
-            this.grid[y + 1][x - 1].clickable = true;
-        }
-        if (y+1<8) {
-            this.grid[y + 1][x].clickable = true;
-        }
-        if (y+1<8 && x+1<8) {
-            this.grid[y+1][x+1].clickable = true;
+
+        for (let y_i=-1; y_i<2; y_i++){
+            for (let x_i=-1; x_i<2; x_i++){
+                if (y+y_i < 0 || y+y_i > 7){
+                    break;
+                } else if (x+x_i < 0 || x+x_i > 7){
+                    continue;
+                }
+                this.grid[y + y_i][x + x_i].clickable = true;
+            }
         }
     },
     checkSurroundingChips: function(y, x, player){          //checks all 8 cells surrounding current cell, if it finds other player's disc, calls function to search in appropriate direction
@@ -363,7 +350,6 @@ var controller = {
             var targetPosition;
             var y;
             var x;
-            var cellsToExplode = [];
 
             for (var i = 0; i < model.currentAvailableSpots.length; i++) {
                 if (targetCell[0] === model.currentAvailableSpots[i].location[0]) {
@@ -381,13 +367,11 @@ var controller = {
                         if (currentCheck) {
                             for (var k = 0; k < currentCheck.length; k++) {
                                 view.flipChip(currentCheck[k].location.find('.chip'));
-                                // cellsToExplode.push(currentCheck[k].location.find('.chip'));
                                 model.flipChipData(currentCheck[k], model.player);
                             }
                         }
                     }
                     afterMove();
-                    // prepareExploders(cellsToExplode, 'sequential', afterMove);
                 }
             }
             function afterMove() {
