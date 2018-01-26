@@ -523,9 +523,6 @@ h2 {
     }
 
     .playAgain {
-        background-color: #ffffff52;
-        border: 2px solid white;
-        border-radius: 5px;
         text-shadow: 2px 2px black;
         padding: 1%;
     }
