@@ -102,7 +102,7 @@ aside {
 }
 
 h2 {
-    font-size: 3em;
+    font-size: 6vmin;
 }
 
 
@@ -233,7 +233,7 @@ h2 {
 .playerName {
     position: relative;
     font-size: 4vw;
-    top: 85%;
+    top: 90%;
 }
 
 .directions {
@@ -261,9 +261,9 @@ h2 {
 }
 
 .multiButton, .singleButton {
-    background-color: white;
+    /* background-color: white; */
     width: 20%;
-    height: 6%;
+    /* height: 6%; */
     border-radius: 5px;
     outline: none;
     position: absolute;
@@ -273,6 +273,7 @@ h2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
     font-weight: bold;
+    padding: 5px;
 }
 
 .multiButton{
@@ -441,7 +442,7 @@ h2 {
 
     .playerName {
         top: 90%;
-        font-size: 5vw;
+        font-size: 4vmin;
     }
 
 
@@ -457,10 +458,12 @@ h2 {
     #gameboard {
         width: 85vw;
         height: 85vw;
+        max-width: 60vmin;
+        max-height: 60vmin;
     }
 
     .cell {
-        font-size: 4.5vw;
+        font-size: 3.5vmin;
     }
 
     aside {
@@ -482,12 +485,12 @@ h2 {
     }
 
     .rightAside {
-        top: 75%;
+        top: 74%;
         right: 0%;
     }
 
     .playerStats {
-        padding: 5%;
+        padding: 1%;
     }
 
     .playerStats .blue, .playerStats .orange {
@@ -516,7 +519,7 @@ h2 {
 
     .winnerModalHeader {
         margin-top: 15vw;
-        font-size: 11vw;
+        font-size: 6vw;
     }
 
     .playAgain {
@@ -524,6 +527,12 @@ h2 {
         border: 2px solid white;
         border-radius: 5px;
         text-shadow: 2px 2px black;
+        padding: 1%;
     }
+
+    .winModalContent .playerBox {
+        top: 80%;
+    }
+
 
 }
