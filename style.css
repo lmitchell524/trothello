@@ -19,7 +19,7 @@ body {
     width: 100vw;
     font-family: 'Tron', sans-serif;
     color: #fff;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 main {
@@ -76,7 +76,6 @@ aside {
 #gameboard {
     width: 42vw;
     height: 42vw;
-    float: left;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -238,7 +237,6 @@ h2 {
 
 .directions {
     width: 50vw;
-    float: left;
     position: absolute;
     top: 52%;
     left: 50%;
@@ -454,8 +452,8 @@ h2 {
     }
 
     #gameboard {
-        width: 85vw;
-        height: 85vw;
+        width: 75vw;
+        height: 75vw;
         /* max-width: 60vmin;
         max-height: 60vmin; */
     }
@@ -483,12 +481,9 @@ h2 {
     }
 
     .rightAside {
+        clear: both;
         top: 74%;
         right: 0%;
-    }
-
-    .playerStats {
-        padding: 1%;
     }
 
     .playerStats .blue, .playerStats .orange {
@@ -531,7 +526,8 @@ h2 {
 
 }
 
-@media screen and (min-width: 485px) and (max-width: 768px){
+@media screen and (max-width: 768px){
+
     .rightAside {
         top: 74%;
     }
@@ -547,5 +543,65 @@ h2 {
 
     .cell {
         font-size: 3.5vmin;
+    }
+}
+
+@media only screen
+  and (min-width: 360px)
+  and (max-width: 768px)
+  and (max-height: 672px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+      .directions {
+          width: 55vw;
+      }
+      .playerBox {
+          width: 15%;
+      }
+      aside {
+          position: absolute;
+          transform: translate(0, -50%);
+          width: 20%;
+          border: 1px solid rgba(45, 205, 229, 1);
+          border-radius: 5px;
+      }
+      .rightAside {
+          right: 3%;
+          top: 50%;
+      }
+
+      .leftAside {
+          left: 3%;
+          top: 50%;
+      }
+
+      .playerStats .blue, .playerStats .orange {
+          display: block;
+          float: none;
+      }
+
+      .playerStats div {
+          display: block;
+          margin: 0;
+      }
+
+      #gameboard {
+          max-width: 80vmin;
+          max-height: 80vmin;
+      }
+
+      .cell {
+          font-size: 4.5vmin;
+      }
+
+}
+
+@meda screen and (max-width: 450px){
+    body {
+        min-height: 550px;
+    }
+
+    .container {
+        min-height: 550px;
     }
 }
