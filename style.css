@@ -308,18 +308,18 @@ h2 {
 
 .winnerModalHeader {
     margin-top: 4vw;
-    font-size: 6vw;
+    font-size: 10vmin;
     text-align: center;
 }
 
 .playAgain {
     font-family: 'Rationale', sans-serif;
-    font-size: 3em;
+    font-size: 10vmin;
     text-align: center;
-    position: absolute;
+    /* position: absolute;
     top: 30vh;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
 }
 
 .playerBox1Win {
@@ -331,11 +331,6 @@ h2 {
     background-size: cover;
     border: 2px solid white;
 }
-
-/* .playerBox1Win:hover{
-    box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
-        box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
-} */
 
 .playerBox1WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
@@ -350,10 +345,6 @@ h2 {
     background-size: cover;
     border: 2px solid white;
 }
-
-/* .playerBox2Win:hover {
-    box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
-} */
 
 .playerBox2WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
@@ -444,7 +435,7 @@ h2 {
     }
 
     .playerName {
-        top: 90%;
+        top: 93%;
         font-size: 4vmin;
     }
 
@@ -527,8 +518,7 @@ h2 {
 /**********************************/
 
     .winnerModalHeader {
-        margin-top: 15vw;
-        font-size: 6vw;
+        font-size: 9vmin;
     }
 
     .playAgain {
@@ -537,7 +527,8 @@ h2 {
     }
 
     .winModalContent .playerBox {
-        top: 80%;
+        width: 35%;
+        height: 25%;
     }
 
 }
@@ -606,14 +597,27 @@ h2 {
           font-size: 4.5vmin;
       }
 
+      .winModalContent .playerBox {
+          width: 25%;
+          height: 30%;
+      }
+
 }
 
-@meda screen and (max-width: 450px){
+@media screen and (max-width: 450px){
     body {
         min-height: 550px;
     }
 
     .container {
         min-height: 550px;
+    }
+
+    .winnerModalHeader {
+        margin-top: 15vw;
+    }
+
+    .winModalContent .playerBox {
+        top: 60%;
     }
 }
