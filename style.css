@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: 'Tron';
-    src: url(tron/tron.ttf);
+    src: url(./tron/TRON.TTF);
     font-weight: bold;
 }
 
@@ -19,7 +19,7 @@ body {
     width: 100vw;
     font-family: 'Tron', sans-serif;
     color: #fff;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 main {
@@ -76,9 +76,8 @@ aside {
 #gameboard {
     width: 42vw;
     height: 42vw;
-    float: left;
     position: absolute;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -102,7 +101,7 @@ aside {
 }
 
 h2 {
-    font-size: 3em;
+    font-size: 6vmin;
 }
 
 
@@ -130,22 +129,33 @@ h2 {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #2dcde5, 0 0 70px #2dcde5, 0 0 80px #2dcde5, 0 0 100px #2dcde5, 0 0 150px #2dcde5;
 }
 
+.chip.blue {
+    transform: rotateY(0deg);
+}
+
 .orange {
     text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FF9900, 0 0 70px #FF9900, 0 0 80px #FF9900, 0 0 100px #FF9900, 0 0 150px #FF9900;
 }
+
+.chip.orange {
+    transform: rotateY(180deg);
+}
+
 
 .counter1, .counter2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
 }
 
+
+
 /* ------------------ intro modal ----------------------*/
 
 .introModalContainer {
     position: fixed;
     z-index: 100;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     color: white;
     transition: 1s;
 }
@@ -177,8 +187,9 @@ h2 {
     position: absolute;
 }
 
-.playerBox1:hover{
+.playerBox1:hover, .playerBox1Win:hover {
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+    cursor: pointer;
 }
 
 .playerBox1Clicked{
@@ -193,8 +204,9 @@ h2 {
     position: absolute;
 }
 
-.playerBox2:hover {
+.playerBox2:hover, .playerBox2Win:hover {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
+    cursor: pointer;
 }
 
 .playerBox2Clicked{
@@ -222,12 +234,11 @@ h2 {
 .playerName {
     position: relative;
     font-size: 4vw;
-    top: 85%;
+    top: 90%;
 }
 
 .directions {
     width: 50vw;
-    float: left;
     position: absolute;
     top: 52%;
     left: 50%;
@@ -240,7 +251,7 @@ h2 {
 
 .directionsList > li {
     font-size: 3vh;
-    padding-bottom: 4%;
+    padding-bottom: 3%;
     list-style: none;
 }
 
@@ -250,9 +261,7 @@ h2 {
 }
 
 .multiButton, .singleButton {
-    background-color: white;
     width: 20%;
-    height: 6%;
     border-radius: 5px;
     outline: none;
     position: absolute;
@@ -262,6 +271,8 @@ h2 {
     font-family: 'Rationale', sans-serif;
     font-size: 3vw;
     font-weight: bold;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
 }
 
 .multiButton{
@@ -284,8 +295,8 @@ h2 {
 .winModalContent {
     position: fixed;
     z-index: 100;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     color: white;
     background-image: url("images/winModalBG.jpg");
     background-position: center;
@@ -321,9 +332,10 @@ h2 {
     border: 2px solid white;
 }
 
-.playerBox1Win:hover{
+/* .playerBox1Win:hover{
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
-}
+        box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
+} */
 
 .playerBox1WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #2dcde5, 0 0 60px #2dcde5, 0 0 80px #2dcde5;
@@ -339,9 +351,9 @@ h2 {
     border: 2px solid white;
 }
 
-.playerBox2Win:hover {
+/* .playerBox2Win:hover {
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
-}
+} */
 
 .playerBox2WinClicked{
     box-shadow: 0 0 20px #fff, 0 0 40px #FF9900, 0 0 60px #FF9900, 0 0 80px #FF9900;
@@ -361,8 +373,12 @@ h2 {
     position: absolute;
     top: auto;
     left: 0;
-    -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
-    transition: transform 1.4s ease-in, background 0.3s ease-in;
+    -webkit-transition: -webkit-transform 0.5s linear;
+    transition: transform 0.5s linear;
+}
+
+.rotateY90 {
+    transform: rotateY(90deg) !important;
 }
 
 .cell, .cell div {
@@ -378,6 +394,10 @@ h2 {
     top: 0;
     left: 0;
 }
+.directionsList {
+    margin-top: 1px;
+    padding-left: 0;
+}
 
 @media screen and (max-width: 768px){
 
@@ -390,44 +410,42 @@ h2 {
     }
 
     .multiButton, .singleButton {
-        top: 16vh;
+        top: 92%;
         font-size: 3.5vw;
         width: 23%;
     }
 
     .directions {
         width: 90vw;
-        top: 46%;
+        top: 61%;
         height: 50%;
     }
 
     .directionsList {
         margin-top: 1px;
-        padding-left: 0;
     }
 
     .directionsList > li {
-        font-size: 2.5vh;
+        font-size: 2.25vh;
     }
 
-    .playerBox {
+    .playerBox1, .playerBox2 {
         width: 30%;
-        height: 20%;
+        height: 15%;
+        top: 21%;
     }
 
     .playerBox2 {
-        top: 83%;
         left: 70%;
     }
 
     .playerBox1 {
-        top: 83%;
         left: 30%;
     }
 
     .playerName {
         top: 90%;
-        font-size: 5vw;
+        font-size: 4vmin;
     }
 
 
@@ -441,12 +459,14 @@ h2 {
     }
 
     #gameboard {
-        width: 85vw;
-        height: 85vw;
+        width: 75vw;
+        height: 75vw;
+        /* max-width: 60vmin;
+        max-height: 60vmin; */
     }
 
     .cell {
-        font-size: 4.5vw;
+        font-size: 4.5vmin;
     }
 
     aside {
@@ -463,17 +483,14 @@ h2 {
     }
 
     .leftAside {
-        top: 11%;
+        top: 15%;
         left: 0%;
     }
 
     .rightAside {
-        top: 75%;
+        clear: both;
+        top: 74%;
         right: 0%;
-    }
-
-    .playerStats {
-        padding: 5%;
     }
 
     .playerStats .blue, .playerStats .orange {
@@ -481,6 +498,7 @@ h2 {
         font-size: 5vmin;
         float: left;
         margin-top: 3%;
+        padding-left: 3%;
     }
 
     .playerStats div {
@@ -494,6 +512,14 @@ h2 {
         margin: 0;
     }
 
+    .orange {
+        text-shadow: 0 0 10px #FF9900, 0 0 15px #FF9900, 0 0 20px #FF9900, 0 0 35px #FF9900, 0 0 40px #FF9900, 0 0 50px #FF9900, 0 0 75px #FF9900;
+    }
+
+    .blue {
+        text-shadow: 0 0 10px #2dcde5, 0 0 15px #2dcde5, 0 0 20px #2dcde5, 0 0 35px #2dcde5, 0 0 40px #2dcde5, 0 0 50px #2dcde5, 0 0 75px #2dcde5;
+    }
+
 
 
 /**********************************/
@@ -502,17 +528,92 @@ h2 {
 
     .winnerModalHeader {
         margin-top: 15vw;
-        font-size: 11vw;
+        font-size: 6vw;
     }
 
     .playAgain {
-        background-color: #ffffff52;
-        border: 2px solid white;
-        border-radius: 5px;
         text-shadow: 2px 2px black;
+        padding: 1%;
     }
 
+    .winModalContent .playerBox {
+        top: 80%;
+    }
 
+}
 
+@media screen and (max-width: 768px){
 
+    .rightAside {
+        top: 74%;
+    }
+
+    #gameboard {
+        max-width: 60vmin;
+        max-height: 60vmin;
+    }
+
+    .cell {
+        font-size: 3.5vmin;
+    }
+}
+
+@media only screen
+  and (min-width: 360px)
+  and (max-width: 768px)
+  and (max-height: 672px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+      .directions {
+          width: 55vw;
+      }
+      .playerBox1, .playerBox2 {
+          width: 15%;
+      }
+      aside {
+          position: absolute;
+          transform: translate(0, -50%);
+          width: 20%;
+          border: 1px solid rgba(45, 205, 229, 1);
+          border-radius: 5px;
+      }
+      .rightAside {
+          right: 3%;
+          top: 50%;
+      }
+
+      .leftAside {
+          left: 3%;
+          top: 50%;
+      }
+
+      .playerStats .blue, .playerStats .orange {
+          display: block;
+          float: none;
+      }
+
+      .playerStats div {
+          display: block;
+          margin: 0;
+      }
+
+      #gameboard {
+          max-width: 80vmin;
+          max-height: 80vmin;
+      }
+
+      .cell {
+          font-size: 4.5vmin;
+      }
+
+}
+
+@meda screen and (max-width: 450px){
+    body {
+        min-height: 550px;
+    }
+
+    .container {
+        min-height: 550px;
+    }
 }
