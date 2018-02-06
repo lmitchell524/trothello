@@ -274,7 +274,7 @@ h2 {
 
 .multiButton{
     left: 63%;
-    background-color: rgba(255, 255, 255, 0.00784314);
+    background-color: rgb(255, 255, 255);
 }
 
 .singleButton {
@@ -293,8 +293,8 @@ h2 {
 .winModalContent {
     position: fixed;
     z-index: 100;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     color: white;
     background-image: url("images/winModalBG.jpg");
     background-position: center;
@@ -508,6 +508,14 @@ h2 {
         margin: 0;
     }
 
+    .orange {
+        text-shadow: 0 0 10px #FF9900, 0 0 15px #FF9900, 0 0 20px #FF9900, 0 0 35px #FF9900, 0 0 40px #FF9900, 0 0 50px #FF9900, 0 0 75px #FF9900;
+    }
+
+    .blue {
+        text-shadow: 0 0 10px #2dcde5, 0 0 15px #2dcde5, 0 0 20px #2dcde5, 0 0 35px #2dcde5, 0 0 40px #2dcde5, 0 0 50px #2dcde5, 0 0 75px #2dcde5;
+    }
+
 
 
 /**********************************/
@@ -536,9 +544,9 @@ h2 {
         top: 74%;
     }
 
-    .leftAside {
-        top: 12%;
-    }
+    /* .leftAside {
+        top: 15%;
+    } */
 
     #gameboard {
         max-width: 60vmin;
