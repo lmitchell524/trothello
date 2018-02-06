@@ -390,6 +390,10 @@ h2 {
     top: 0;
     left: 0;
 }
+.directionsList {
+    margin-top: 1px;
+    padding-left: 0;
+}
 
 @media screen and (max-width: 768px){
 
@@ -415,7 +419,6 @@ h2 {
 
     .directionsList {
         margin-top: 1px;
-        padding-left: 0;
     }
 
     .directionsList > li {
