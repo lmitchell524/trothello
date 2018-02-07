@@ -578,6 +578,14 @@ h2 {
               width: 25%;
               height: 30%;
           }
+
+          .orange {
+              text-shadow: 0 0 10px #FF9900, 0 0 15px #FF9900, 0 0 20px #FF9900, 0 0 35px #FF9900, 0 0 40px #FF9900, 0 0 50px #FF9900, 0 0 75px #FF9900;
+          }
+
+          .blue {
+              text-shadow: 0 0 10px #2dcde5, 0 0 15px #2dcde5, 0 0 20px #2dcde5, 0 0 35px #2dcde5, 0 0 40px #2dcde5, 0 0 50px #2dcde5, 0 0 75px #2dcde5;
+          }
     }
 }
 
