@@ -414,13 +414,11 @@ var controller = {
                 $('.winnerModalHeader').text('Tron Wins!');
                 view.addWinnerModal();
             }, 1000);
-            explodeElement();
         } else if (winState === 1){
             setTimeout(function(){
                 $('.winnerModalHeader').text('Clu Wins!');
                 view.addWinnerModal();
             }, 1000);
-            explodeElement();
         } else if (winState === 2){
             setTimeout(function() {
                 $('.winnerModalHeader').text('It\'s a draw!');
